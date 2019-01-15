@@ -25,6 +25,22 @@ def return_all_products():
 def return_product(product_id):
     return products.get(doc_id=product_id)
 
+
+def find_products(search_title):
+    if not search_title:
+        return return_all_products()
+
+    Product_query = Query()
+    matching_products = products.search(Product_query.title.test(find_func, search_title))
+    return matching_products
+
+
+def find_func(prod_title, search_title):
+    if search_title in prod_title:
+        return True
+    return False
+
+
 '''
 Endpoints
 '''
@@ -56,7 +72,17 @@ def not_found(error):
 def route_add_product():
     new_product_id = add_product(request.json['title'], request.json['price'], request.json['inventory_count'])
 
-    return jsonify({'product': return_product(new_product_id)})
+    return jsonify({'product': return_product(new_product_id)}), 201
+
+
+@app.route('/marketplace/api/find-products/<title>', methods=['GET'])
+def route_find_products(title):
+    matching_products = find_products(title)
+    if not matching_products:
+        return jsonify({'products': 'none found!'})
+
+    return jsonify({'products': matching_products})
+
 
 
 if __name__ == '__main__':
