@@ -13,17 +13,21 @@ DB functions
 
 def add_product(title, price, inventory_count):
     product_id = str(uuid4())
-    products.insert({'title': title, 'price': price, 'inventory_count': inventory_count, 'uri': url_for('route_get_product', pid=product_id, _external=True)})
+    products.insert({'title': title, 'price': price, 'inventory_count': inventory_count,
+                     'uri': url_for('route_get_product', pid=product_id, _external=True)})
     return product_id
 
 
 def return_all_products():
-    return products.all()
+    Product_query = Query()
+    return products.search(Product_query.inventory_count > 0)
 
 
 def return_product(product_id):
     Product_query = Query()
-    return products.search(Product_query.uri == url_for('route_get_product', pid=product_id, _external=True))
+    return products.search((Product_query.uri ==
+                            url_for('route_get_product', pid=product_id, _external=True))
+                           & (Product_query.inventory_count > 0))
 
 
 def find_products(search_title):
@@ -31,7 +35,8 @@ def find_products(search_title):
         return return_all_products()
 
     Product_query = Query()
-    return products.search(Product_query.title.test(find_func, search_title))
+    return products.search((Product_query.title.test(find_func, search_title))
+                           & (Product_query.inventory_count > 0))
 
 
 def find_func(string, substring):
@@ -42,9 +47,9 @@ def find_func(string, substring):
 
 
 def delete_product(product_id):
-    # products.remove(doc_ids=[prod_id])
     Product_query = Query()
-    prod_to_delete = products.search(Product_query.uri == url_for('route_get_product', pid=product_id, _external=True))
+    prod_to_delete = products.search(Product_query.uri ==
+                                     url_for('route_get_product', pid=product_id, _external=True))
     if not prod_to_delete:
         return [False]
 
@@ -76,21 +81,22 @@ def route_get_product(pid):
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Product(s) not found'}), 404)
+    return make_response(jsonify({'message': 'Product(s) not found'}), 404)
 
 
 @app.route('/marketplace/api/add-product', methods=['POST'])
 def route_add_product():
-    new_product_id = add_product(request.json['title'], request.json['price'], request.json['inventory_count'])
+    new_product_id = add_product(request.json['title'],
+                                 request.json['price'], request.json['inventory_count'])
 
-    return jsonify({'product': return_product(new_product_id)[0]}), 201
+    return jsonify({'added_product': return_product(new_product_id)[0]}), 201
 
 
 @app.route('/marketplace/api/find-products/<title>', methods=['GET'])
 def route_find_products(title):
     matching_products = find_products(title)
     if not matching_products:
-        return jsonify({'products': 'none found!'})
+        return jsonify({'message': 'No such products found'})
 
     return jsonify({'products': matching_products})
 
