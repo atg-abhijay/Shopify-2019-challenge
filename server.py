@@ -1,6 +1,7 @@
 from uuid import uuid4
 from flask import Flask, jsonify, abort, make_response, request, url_for
 from tinydb import TinyDB, Query
+from tinydb.operations import decrement
 
 db = TinyDB('db.json')
 products = db.table('products')
@@ -13,9 +14,8 @@ DB functions
 '''
 
 def sign_up(uname, pwd, email):
-    new_user_id = users.insert({'username': uname, 'password': pwd, 'email': email})
-
-    return new_user_id
+    users.insert({'username': uname, 'password': pwd, 'email': email})
+    return uname
 
 
 def sign_in(uname, pwd):
@@ -30,15 +30,20 @@ def sign_in(uname, pwd):
     return 0
 
 
-def get_user(user_id):
-    return users.get(doc_id=user_id)
+def get_user(uname):
+    User_query = Query()
+    return users.get(User_query.username == uname)
 
 
 def add_product(title, price, inventory_count):
     product_id = str(uuid4())
     products.insert({'title': title, 'price': price, 'inventory_count': inventory_count,
-                     'uri': url_for('route_get_product', pid=product_id, _external=True)})
+                     'uri': generate_product_uri(product_id)})
     return product_id
+
+
+def generate_product_uri(product_id):
+    return url_for('route_get_product', pid=product_id, _external=True)
 
 
 def return_all_products():
@@ -48,9 +53,8 @@ def return_all_products():
 
 def return_product(product_id):
     Product_query = Query()
-    return products.get((Product_query.uri ==
-                            url_for('route_get_product', pid=product_id, _external=True))
-                           & (Product_query.inventory_count > 0))
+    return products.get((Product_query.uri == generate_product_uri(product_id))
+                        & (Product_query.inventory_count > 0))
 
 
 def find_products(search_title):
@@ -71,13 +75,59 @@ def find_func(string, substring):
 
 def delete_product(product_id):
     Product_query = Query()
-    prod_to_delete = products.get(Product_query.uri ==
-                                     url_for('route_get_product', pid=product_id, _external=True))
+    prod_to_delete = products.get(Product_query.uri == generate_product_uri(product_id))
     if not prod_to_delete:
         return [False]
 
     products.remove(doc_ids=[prod_to_delete.doc_id])
     return [True, prod_to_delete]
+
+
+def add_product_to_cart(uname, product_uri):
+    User_query = Query()
+    Product_query = Query()
+    current_user = users.get(User_query.username == uname)
+    if 'cart' not in current_user:
+        current_user['cart'] = [product_uri]
+    else:
+        current_user['cart'].append(product_uri)
+
+    users.update({'cart': current_user['cart']}, User_query.username == uname)
+
+    return jsonify({'message': 'Product added to cart successfully', 'username': uname,
+                    'product': products.get(Product_query.uri == product_uri)})
+
+
+def remove_product_from_cart(uname, product_uri):
+    User_query = Query()
+    Product_query = Query()
+    current_user = users.get(User_query.username == uname)
+    current_user['cart'].remove(product_uri)
+    users.update({'cart': current_user['cart']}, User_query.username == uname)
+
+    return jsonify({'message': 'Product removed from cart successfully', 'username': uname,
+                    'product': products.get(Product_query.uri == product_uri)})
+
+
+def return_user_cart(uname):
+    User_query = Query()
+    Product_query = Query()
+    current_user_cart = users.get(User_query.username == uname)['cart']
+    cart = {'products': [], 'total_price': 0}
+    for product_uri in current_user_cart:
+        cart_product = products.get(Product_query.uri == product_uri)
+        cart['products'].append(cart_product)
+        cart['total_price'] += cart_product['price']
+
+    return jsonify({'cart': cart})
+
+
+def decrement_inventories(uname):
+    User_query = Query()
+    Product_query = Query()
+    current_user_cart = users.get(User_query.username == uname)['cart']
+    for product_uri in current_user_cart:
+        products.update(decrement('inventory_count'), Product_query.uri == product_uri)
 
 
 '''
@@ -107,12 +157,32 @@ def not_found(error):
     return make_response(jsonify({'message': 'Product(s) not found'}), 404)
 
 
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'message': error.description}), 400)
+
+
 @app.route('/marketplace/api/add-product', methods=['POST'])
 def route_add_product():
-    new_product_id = add_product(request.json['title'],
-                                 request.json['price'], request.json['inventory_count'])
+    title, price, inventory = request.json['title'], request.json['price'], request.json['inventory_count']
+    if not title:
+        abort(400, 'Title of product is missing')
 
-    return jsonify({'added_product': return_product(new_product_id)}), 201
+    if not isinstance(price, (int, float)):
+        abort(400, 'Price of product has to be a number')
+
+    if price < 0:
+        abort(400, 'Price of product has to be non-negative')
+
+    if not isinstance(inventory, int):
+        abort(400, 'Inventory of product has to be a number')
+
+    if inventory < 0:
+        abort(400, 'Inventory of product has to be non-negative')
+
+    new_product_id = add_product(title, price, inventory)
+    return jsonify({'added_product': {'title': title, 'price': price,
+                    'inventory_count': inventory, 'uri': new_product_id}}), 201
 
 
 @app.route('/marketplace/api/find-products/<title>', methods=['GET'])
@@ -135,13 +205,13 @@ def route_delete_product(pid):
 
 @app.route('/marketplace/api/sign-up', methods=['POST'])
 def route_sign_up():
-    new_user_id = sign_up(request.json['username'],
+    uname = sign_up(request.json['username'],
                           request.json['password'], request.json['email'])
 
-    new_user = get_user(new_user_id)
-    new_user['password'] = '***************'
+    new_user = get_user(uname)
+    new_user.pop('password')
 
-    return jsonify({'new_user': new_user})
+    return jsonify({'message': 'User signed up successfully', 'new_user': new_user})
 
 
 @app.route('/marketplace/api/sign-in', methods=['POST'])
