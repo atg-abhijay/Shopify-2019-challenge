@@ -63,9 +63,6 @@ def get_product(product_id):
 
 
 def find_products(search_title):
-    if not search_title:
-        return get_all_products()
-
     Product_query = Query()
     return products.search((Product_query.title.test(find_func, search_title))
                            & (Product_query.inventory_count > 0))
@@ -129,7 +126,7 @@ def generate_product_uri(product_id):
 
 
 def find_func(string, substring):
-    if substring in string:
+    if substring.lower() in string.lower():
         return True
 
     return False
@@ -153,22 +150,19 @@ Endpoints
 def route_sign_up():
     username, password, email = request.json['username'], request.json['password'], request.json['email']
     error_msg = ""
-    error_occured = False
+    error_occured = True
     if not username:
         error_msg = "Username not provided"
-        error_occured = True
     elif get_user(username):
         error_msg = "Username already being used"
-        error_occured = True
     elif not password:
         error_msg = "Password not provided"
-        error_occured = True
     elif not email:
         error_msg = "Email not provided"
-        error_occured = True
     elif get_user_by_email(email):
         error_msg = "Email already registered"
-        error_occured = True
+    else:
+        error_occured = False
 
     if error_occured:
         abort(400, error_msg)
@@ -197,20 +191,23 @@ def route_sign_in():
 @app.route('/marketplace/api/add-product', methods=['POST'])
 def route_add_product():
     title, price, inventory = request.json['title'], request.json['price'], request.json['inventory_count']
+    error_msg = ""
+    error_occured = True
     if not title:
-        abort(400, 'Title of product is missing')
+        error_msg = "Title of product is missing"
+    elif not isinstance(price, (int, float)):
+        error_msg = "Price of product has to be a number"
+    elif price < 0:
+        error_msg = "Price of product has to be non-negative"
+    elif not isinstance(inventory, int):
+        error_msg = "Inventory of product has to be a number"
+    elif inventory < 0:
+        error_msg = "Inventory of product has to be non-negative"
+    else:
+        error_occured = False
 
-    if not isinstance(price, (int, float)):
-        abort(400, 'Price of product has to be a number')
-
-    if price < 0:
-        abort(400, 'Price of product has to be non-negative')
-
-    if not isinstance(inventory, int):
-        abort(400, 'Inventory of product has to be a number')
-
-    if inventory < 0:
-        abort(400, 'Inventory of product has to be non-negative')
+    if error_occured:
+        abort(400, error_msg)
 
     new_product_id = add_product(title, price, inventory)
     return jsonify({'added_product': {'title': title, 'price': price, 'inventory_count': inventory, 'uri': generate_product_uri(new_product_id)}}), 201
@@ -238,7 +235,7 @@ def route_get_product(pid):
 def route_find_products(title):
     matching_products = find_products(title)
     if not matching_products:
-        return jsonify({'message': 'No such products found'})
+        abort(404)
 
     return jsonify({'products': matching_products})
 
