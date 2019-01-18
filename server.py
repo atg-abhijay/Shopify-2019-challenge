@@ -13,6 +13,8 @@ app = Flask(__name__)
 DB functions
 '''
 
+"""User functions"""
+
 def sign_up(uname, pwd, email):
     users.insert({'username': uname, 'password': pwd, 'email': email})
     return uname
@@ -35,6 +37,8 @@ def get_user(uname):
     return users.get(User_query.username == uname)
 
 
+"""Product functions"""
+
 def add_product(title, price, inventory_count):
     product_id = str(uuid4())
     products.insert({'title': title, 'price': price, 'inventory_count': inventory_count,
@@ -42,16 +46,12 @@ def add_product(title, price, inventory_count):
     return product_id
 
 
-def generate_product_uri(product_id):
-    return url_for('route_get_product', pid=product_id, _external=True)
-
-
-def return_all_products():
+def get_all_products():
     Product_query = Query()
     return products.search(Product_query.inventory_count > 0)
 
 
-def return_product(product_id):
+def get_product(product_id):
     Product_query = Query()
     return products.get((Product_query.uri == generate_product_uri(product_id))
                         & (Product_query.inventory_count > 0))
@@ -59,18 +59,11 @@ def return_product(product_id):
 
 def find_products(search_title):
     if not search_title:
-        return return_all_products()
+        return get_all_products()
 
     Product_query = Query()
     return products.search((Product_query.title.test(find_func, search_title))
                            & (Product_query.inventory_count > 0))
-
-
-def find_func(string, substring):
-    if substring in string:
-        return True
-
-    return False
 
 
 def delete_product(product_id):
@@ -82,6 +75,8 @@ def delete_product(product_id):
     products.remove(doc_ids=[prod_to_delete.doc_id])
     return [True, prod_to_delete]
 
+
+"""Cart functions"""
 
 def add_product_to_cart(uname, product_uri):
     User_query = Query()
@@ -122,6 +117,19 @@ def return_user_cart(uname):
     return jsonify({'cart': cart})
 
 
+"""Helper functions"""
+
+def generate_product_uri(product_id):
+    return url_for('route_get_product', pid=product_id, _external=True)
+
+
+def find_func(string, substring):
+    if substring in string:
+        return True
+
+    return False
+
+
 def decrement_inventories(uname):
     User_query = Query()
     Product_query = Query()
@@ -134,33 +142,32 @@ def decrement_inventories(uname):
 Endpoints
 '''
 
-@app.route('/marketplace/api/products', methods=['GET'])
-def route_get_products():
-    all_products = return_all_products()
-    if not all_products:
-        abort(404)
+"""User endpoints"""
 
-    return jsonify({'products': all_products})
+@app.route('/marketplace/api/sign-up', methods=['POST'])
+def route_sign_up():
+    uname = sign_up(request.json['username'],
+                    request.json['password'], request.json['email'])
 
+    new_user = get_user(uname)
+    new_user.pop('password')
 
-@app.route('/marketplace/api/product/<pid>', methods=['GET'])
-def route_get_product(pid):
-    product = return_product(pid)
-    if not product:
-        abort(404)
-
-    return jsonify({'product': product})
+    return jsonify({'message': 'User signed up successfully', 'new_user': new_user})
 
 
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'message': 'Product(s) not found'}), 404)
+@app.route('/marketplace/api/sign-in', methods=['POST'])
+def route_sign_in():
+    error_code = sign_in(request.json['username'], request.json['password'])
+    if error_code == 1:
+        return jsonify({'message': 'Username not found'})
+
+    if error_code == 2:
+        return jsonify({'message': 'Incorrect password'})
+
+    return jsonify({'message': 'Login successful'})
 
 
-@app.errorhandler(400)
-def bad_request(error):
-    return make_response(jsonify({'message': error.description}), 400)
-
+"""Product endpoints"""
 
 @app.route('/marketplace/api/add-product', methods=['POST'])
 def route_add_product():
@@ -181,8 +188,25 @@ def route_add_product():
         abort(400, 'Inventory of product has to be non-negative')
 
     new_product_id = add_product(title, price, inventory)
-    return jsonify({'added_product': {'title': title, 'price': price,
-                    'inventory_count': inventory, 'uri': new_product_id}}), 201
+    return jsonify({'added_product': {'title': title, 'price': price, 'inventory_count': inventory, 'uri': new_product_id}}), 201
+
+
+@app.route('/marketplace/api/products', methods=['GET'])
+def route_get_all_products():
+    all_products = get_all_products()
+    if not all_products:
+        abort(404)
+
+    return jsonify({'products': all_products})
+
+
+@app.route('/marketplace/api/product/<pid>', methods=['GET'])
+def route_get_product(pid):
+    product = get_product(pid)
+    if not product:
+        abort(404)
+
+    return jsonify({'product': product})
 
 
 @app.route('/marketplace/api/find-products/<title>', methods=['GET'])
@@ -203,27 +227,18 @@ def route_delete_product(pid):
     return jsonify({'removed_product': outcome[1], 'message': 'Product deleted successfully'})
 
 
-@app.route('/marketplace/api/sign-up', methods=['POST'])
-def route_sign_up():
-    uname = sign_up(request.json['username'],
-                          request.json['password'], request.json['email'])
+'''
+Error handling
+'''
 
-    new_user = get_user(uname)
-    new_user.pop('password')
-
-    return jsonify({'message': 'User signed up successfully', 'new_user': new_user})
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'message': 'Product(s) not found'}), 404)
 
 
-@app.route('/marketplace/api/sign-in', methods=['POST'])
-def route_sign_in():
-    error_code = sign_in(request.json['username'], request.json['password'])
-    if error_code == 1:
-        return jsonify({'message': 'Username not found'})
-
-    if error_code == 2:
-        return jsonify({'message': 'Incorrect password'})
-
-    return jsonify({'message': 'Login successful'})
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'message': error.description}), 400)
 
 
 if __name__ == '__main__':
