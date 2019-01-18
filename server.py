@@ -37,6 +37,11 @@ def get_user(uname):
     return users.get(User_query.username == uname)
 
 
+def get_user_by_email(email):
+    User_query = Query()
+    return users.get(User_query.email == email)
+
+
 """Product functions"""
 
 def add_product(title, price, inventory_count):
@@ -146,9 +151,29 @@ Endpoints
 
 @app.route('/marketplace/api/sign-up', methods=['POST'])
 def route_sign_up():
-    uname = sign_up(request.json['username'],
-                    request.json['password'], request.json['email'])
+    username, password, email = request.json['username'], request.json['password'], request.json['email']
+    error_msg = ""
+    error_occured = False
+    if not username:
+        error_msg = "Username not provided"
+        error_occured = True
+    elif get_user(username):
+        error_msg = "Username already being used"
+        error_occured = True
+    elif not password:
+        error_msg = "Password not provided"
+        error_occured = True
+    elif not email:
+        error_msg = "Email not provided"
+        error_occured = True
+    elif get_user_by_email(email):
+        error_msg = "Email already registered"
+        error_occured = True
 
+    if error_occured:
+        abort(400, error_msg)
+
+    uname = sign_up(username, password, email)
     new_user = get_user(uname)
     new_user.pop('password')
 
