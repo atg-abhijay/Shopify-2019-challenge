@@ -80,30 +80,29 @@ def delete_product(product_id):
 
 """Cart functions"""
 
-def add_product_to_cart(uname, product_uri):
+def add_product_to_cart(uname, product_id):
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
     if 'cart' not in current_user:
-        current_user['cart'] = [product_uri]
+        current_user['cart'] = [product_id]
     else:
-        current_user['cart'].append(product_uri)
+        current_user['cart'].append(product_id)
 
     users.update({'cart': current_user['cart']}, User_query.username == uname)
 
-    return jsonify({'message': 'Product added to cart successfully', 'username': uname,
-                    'product': products.get(Product_query.uri == product_uri)})
+    return {'username': uname, 'product': products.get(Product_query.uri == generate_product_uri(product_id))}
 
 
-def remove_product_from_cart(uname, product_uri):
+def remove_product_from_cart(uname, product_id):
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
-    current_user['cart'].remove(product_uri)
+    current_user['cart'].remove(product_id)
     users.update({'cart': current_user['cart']}, User_query.username == uname)
 
     return jsonify({'message': 'Product removed from cart successfully', 'username': uname,
-                    'product': products.get(Product_query.uri == product_uri)})
+                    'product': products.get(Product_query.uri == generate_product_uri(product_id))})
 
 
 def return_user_cart(uname):
@@ -111,8 +110,8 @@ def return_user_cart(uname):
     Product_query = Query()
     current_user_cart = users.get(User_query.username == uname)['cart']
     cart = {'products': [], 'total_price': 0}
-    for product_uri in current_user_cart:
-        cart_product = products.get(Product_query.uri == product_uri)
+    for product_id in current_user_cart:
+        cart_product = products.get(Product_query.uri == generate_product_uri(product_id))
         cart['products'].append(cart_product)
         cart['total_price'] += cart_product['price']
 
@@ -244,9 +243,19 @@ def route_find_products(title):
 def route_delete_product(pid):
     outcome = delete_product(pid)
     if not outcome[0]:
-        return jsonify({'message': 'No such product exists'})
+        abort(404)
 
     return jsonify({'removed_product': outcome[1], 'message': 'Product deleted successfully'})
+
+
+"""Cart endpoints"""
+
+@app.route('/marketplace/api/add-product-to-cart', methods=['POST'])
+def route_add_product_to_cart():
+    uname_product = add_product_to_cart(request.json['username'], request.json['product_uri'])
+    uname_product['message'] = "Product added to cart successfully"
+
+    return jsonify({'added_product_to_cart': uname_product})
 
 
 '''
