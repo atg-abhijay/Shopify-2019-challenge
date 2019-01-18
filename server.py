@@ -101,21 +101,24 @@ def remove_product_from_cart(uname, product_id):
     current_user['cart'].remove(product_id)
     users.update({'cart': current_user['cart']}, User_query.username == uname)
 
-    return jsonify({'message': 'Product removed from cart successfully', 'username': uname,
-                    'product': products.get(Product_query.uri == generate_product_uri(product_id))})
+    return {'username': uname, 'product': products.get(Product_query.uri == generate_product_uri(product_id))}
 
 
-def return_user_cart(uname):
+def get_user_cart(uname):
     User_query = Query()
     Product_query = Query()
-    current_user_cart = users.get(User_query.username == uname)['cart']
+    current_user = users.get(User_query.username == uname)
+    if 'cart' not in current_user:
+        return {}
+
+    current_user_cart = current_user['cart']
     cart = {'products': [], 'total_price': 0}
     for product_id in current_user_cart:
         cart_product = products.get(Product_query.uri == generate_product_uri(product_id))
         cart['products'].append(cart_product)
         cart['total_price'] += cart_product['price']
 
-    return jsonify({'cart': cart})
+    return cart
 
 
 """Helper functions"""
@@ -252,10 +255,26 @@ def route_delete_product(pid):
 
 @app.route('/marketplace/api/add-product-to-cart', methods=['POST'])
 def route_add_product_to_cart():
-    uname_product = add_product_to_cart(request.json['username'], request.json['product_uri'])
+    uname_product = add_product_to_cart(request.json['username'], request.json['product_id'])
     uname_product['message'] = "Product added to cart successfully"
 
     return jsonify({'added_product_to_cart': uname_product})
+
+
+@app.route('/marketplace/api/remove-product-from-cart', methods=['DELETE'])
+def route_remove_product_from_cart():
+    uname_product = remove_product_from_cart(request.json['username'], request.json['product_id'])
+    uname_product['message'] = "Product removed from cart successfully"
+
+    return jsonify({'removed_product_from_cart': uname_product})
+
+
+@app.route('/marketplace/api/get-user-cart', methods=['POST'])
+def route_get_user_cart():
+    username = request.json['username']
+    cart = get_user_cart(username)
+
+    return jsonify({'user_cart': cart, 'username': username})
 
 
 '''
