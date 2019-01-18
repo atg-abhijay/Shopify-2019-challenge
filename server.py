@@ -213,7 +213,7 @@ def route_add_product():
         abort(400, 'Inventory of product has to be non-negative')
 
     new_product_id = add_product(title, price, inventory)
-    return jsonify({'added_product': {'title': title, 'price': price, 'inventory_count': inventory, 'uri': new_product_id}}), 201
+    return jsonify({'added_product': {'title': title, 'price': price, 'inventory_count': inventory, 'uri': generate_product_uri(new_product_id)}}), 201
 
 
 @app.route('/marketplace/api/products', methods=['GET'])
