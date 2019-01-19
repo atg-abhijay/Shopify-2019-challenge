@@ -16,7 +16,7 @@ DB functions
 """User functions"""
 
 def sign_up(uname, pwd, email):
-    users.insert({'username': uname, 'password': pwd, 'email': email})
+    users.insert({'username': uname, 'password': pwd, 'email': email, 'cart': []})
     return uname
 
 
@@ -84,10 +84,7 @@ def add_product_to_cart(uname, product_id):
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
-    if 'cart' not in current_user:
-        current_user['cart'] = [product_id]
-    else:
-        current_user['cart'].append(product_id)
+    current_user['cart'].append(product_id)
 
     users.update({'cart': current_user['cart']}, User_query.username == uname)
 
@@ -107,11 +104,8 @@ def remove_product_from_cart(uname, product_id):
 def get_user_cart(uname):
     User_query = Query()
     Product_query = Query()
-    current_user = users.get(User_query.username == uname)
-    if 'cart' not in current_user:
-        return {}
+    current_user_cart = users.get(User_query.username == uname)['cart']
 
-    current_user_cart = current_user['cart']
     cart = {'products': [], 'total_price': 0}
     for product_id in current_user_cart:
         cart_product = products.get(Product_query.uri == generate_product_uri(product_id))
@@ -138,8 +132,8 @@ def decrement_inventories(uname):
     User_query = Query()
     Product_query = Query()
     current_user_cart = users.get(User_query.username == uname)['cart']
-    for product_uri in current_user_cart:
-        products.update(decrement('inventory_count'), Product_query.uri == product_uri)
+    for product_id in current_user_cart:
+        products.update(decrement('inventory_count'), Product_query.uri == generate_product_uri(product_id))
 
 
 '''
