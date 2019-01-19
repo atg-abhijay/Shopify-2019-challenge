@@ -162,6 +162,8 @@ def decrement_inventories(uname):
     affected_products = []
     for product_id in current_user_cart:
         products.update(decrement('inventory_count'), Product_query.uri == generate_product_uri(product_id))
+
+    for product_id in set(current_user_cart):
         affected_products.append(products.get(Product_query.uri == generate_product_uri(product_id)))
 
     return affected_products
@@ -304,11 +306,11 @@ def route_get_user_cart():
 @app.route('/marketplace/api/complete-cart', methods=['POST'])
 def route_complete_cart():
     username = request.json['username']
-    order = get_order(generate_order(username))
     affected_products = decrement_inventories(username)
-    modified_user = clear_user_cart(username)
+    order = get_order(generate_order(username))
+    clear_user_cart(username)
 
-    return {'order': order, 'affected_products': affected_products, 'user': modified_user}
+    return jsonify({'order': order, 'affected_products': affected_products})
 
 
 """Order endpoints"""
