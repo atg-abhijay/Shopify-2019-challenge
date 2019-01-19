@@ -24,6 +24,7 @@ def sign_up(uname, pwd, email):
     :param str email: Email (has to be unique)
 
     :returns: Username of the new user
+    :rtype: *str*
 
     """
     users.insert({'username': uname, 'password': pwd, 'email': email, 'cart': []})
@@ -56,12 +57,25 @@ def sign_in(uname, pwd):
 
 def get_user(uname):
     """
-    Retrieves user based on their username
+    Retrieve user based on their username
 
     :param str uname: Username
 
     :returns: User whose username matches the passed parameter
     :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "username": "johndoe",
+            "email": "johndoe@email.com"
+            "cart": [
+                "63f6-bj6m-345k",
+                "354g-3427-nb38"
+            ]
+        }
 
     """
     User_query = Query()
@@ -71,6 +85,28 @@ def get_user(uname):
 
 
 def get_user_by_email(email):
+    """
+    Retrieve user based on their email
+
+    :param str email: User's email
+
+    :returns: User whose username matches the passed parameter
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "username": "johndoe",
+            "email": "johndoe@email.com"
+            "cart": [
+                "63f6-bj6m-345k",
+                "354g-3427-nb38"
+            ]
+        }
+
+    """
     User_query = Query()
     user = users.get(User_query.email == email)
     user.pop('password')
@@ -80,6 +116,14 @@ def get_user_by_email(email):
 """Product functions"""
 
 def add_product(title, price, inventory_count):
+    """
+    Add product to database
+
+    :param str title: Title of the product
+    :param float price: Price of the product
+    :param int inventory_count:
+    """
+
     product_id = str(uuid4())
     products.insert({'title': title, 'price': price, 'inventory_count': inventory_count,
                      'uri': generate_product_uri(product_id)})
