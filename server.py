@@ -6,6 +6,7 @@ from tinydb.operations import decrement
 db = TinyDB('db.json')
 products = db.table('products')
 users = db.table('users')
+orders = db.table('orders')
 
 app = Flask(__name__)
 
@@ -34,12 +35,16 @@ def sign_in(uname, pwd):
 
 def get_user(uname):
     User_query = Query()
-    return users.get(User_query.username == uname)
+    user = users.get(User_query.username == uname)
+    user.pop('password')
+    return user
 
 
 def get_user_by_email(email):
     User_query = Query()
-    return users.get(User_query.email == email)
+    user = users.get(User_query.email == email)
+    user.pop('password')
+    return user
 
 
 """Product functions"""
@@ -115,6 +120,28 @@ def get_user_cart(uname):
     return cart
 
 
+def clear_user_cart(uname):
+    User_query = Query()
+    users.update({'cart': []}, User_query.username == uname)
+    affected_user = get_user(uname)
+    return {'username': uname, 'user_cart': affected_user['cart']}
+
+
+"""Order functions"""
+
+def get_order(order_id):
+    return orders.get(Query().order_id == order_id)
+
+
+def generate_order(uname):
+    user_cart = get_user_cart(uname)
+    order_id = str(uuid4())
+    orders.insert({'order_id': order_id, 'products': user_cart['products'],
+                   'amount': user_cart['total_price'], 'username': uname})
+
+    return order_id
+
+
 """Helper functions"""
 
 def generate_product_uri(product_id):
@@ -132,8 +159,12 @@ def decrement_inventories(uname):
     User_query = Query()
     Product_query = Query()
     current_user_cart = users.get(User_query.username == uname)['cart']
+    affected_products = []
     for product_id in current_user_cart:
         products.update(decrement('inventory_count'), Product_query.uri == generate_product_uri(product_id))
+        affected_products.append(products.get(Product_query.uri == generate_product_uri(product_id)))
+
+    return affected_products
 
 
 '''
@@ -165,7 +196,6 @@ def route_sign_up():
 
     uname = sign_up(username, password, email)
     new_user = get_user(uname)
-    new_user.pop('password')
 
     return jsonify({'message': 'User signed up successfully', 'new_user': new_user})
 
@@ -213,7 +243,7 @@ def route_add_product():
 def route_get_all_products():
     all_products = get_all_products()
     if not all_products:
-        abort(404)
+        abort(404, 'Product(s) not found')
 
     return jsonify({'products': all_products})
 
@@ -222,7 +252,7 @@ def route_get_all_products():
 def route_get_product(pid):
     product = get_product(pid)
     if not product:
-        abort(404)
+        abort(404, 'Product not found')
 
     return jsonify({'product': product})
 
@@ -231,7 +261,7 @@ def route_get_product(pid):
 def route_find_products(title):
     matching_products = find_products(title)
     if not matching_products:
-        abort(404)
+        abort(404, 'Product(s) not found')
 
     return jsonify({'products': matching_products})
 
@@ -240,7 +270,7 @@ def route_find_products(title):
 def route_delete_product(pid):
     outcome = delete_product(pid)
     if not outcome[0]:
-        abort(404)
+        abort(404, 'Product not found')
 
     return jsonify({'removed_product': outcome[1], 'message': 'Product deleted successfully'})
 
@@ -271,13 +301,34 @@ def route_get_user_cart():
     return jsonify({'user_cart': cart, 'username': username})
 
 
+@app.route('/marketplace/api/complete-cart', methods=['POST'])
+def route_complete_cart():
+    username = request.json['username']
+    order = get_order(generate_order(username))
+    affected_products = decrement_inventories(username)
+    modified_user = clear_user_cart(username)
+
+    return {'order': order, 'affected_products': affected_products, 'user': modified_user}
+
+
+"""Order endpoints"""
+
+@app.route('/marketplace/api/order/<order_id>', methods=['GET'])
+def route_get_order(order_id):
+    order = get_order(order_id)
+    if not order:
+        abort(404, 'Order not found')
+
+    return jsonify({'order': order})
+
+
 '''
 Error handling
 '''
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'message': 'Product(s) not found'}), 404)
+    return make_response(jsonify({'message': error.description}), 404)
 
 
 @app.errorhandler(400)
