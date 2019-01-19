@@ -10,18 +10,39 @@ orders = db.table('orders')
 
 app = Flask(__name__)
 
-'''
-DB functions
-'''
+
+### DB functions ###
 
 """User functions"""
 
 def sign_up(uname, pwd, email):
+    """
+    Signs up a new user to the database
+
+    :param str uname: Username (has to be unique)
+    :param str pwd: Password
+    :param str email: Email (has to be unique)
+
+    :returns: Username of the new user
+
+    """
     users.insert({'username': uname, 'password': pwd, 'email': email, 'cart': []})
     return uname
 
 
 def sign_in(uname, pwd):
+    """
+    Performs sign in of a user
+
+    :param str uname: Username
+    :param str pwd: Password
+
+    :returns:
+        * 0 - successful login.
+        * 1 - user not found.
+        * 2 - incorrect password.
+
+    """
     User_query = Query()
     found_user = users.get(User_query.username == uname)
     if not found_user:
@@ -34,6 +55,15 @@ def sign_in(uname, pwd):
 
 
 def get_user(uname):
+    """
+    Retrieves user based on their username
+
+    :param str uname: Username
+
+    :returns: User whose username matches the passed parameter
+    :rtype: *dict*
+
+    """
     User_query = Query()
     user = users.get(User_query.username == uname)
     user.pop('password')
