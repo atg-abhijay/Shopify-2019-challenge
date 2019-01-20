@@ -247,6 +247,50 @@ def delete_product(product_id):
     return [True, prod_to_delete]
 
 
+def decrement_inventories(uname):
+    """
+    Decrement the inventories of the products that
+    the user purchased.
+
+    :param str uname: Username
+
+    :returns: A list of products whose inventories were decreased
+
+    - Example
+
+    .. code-block:: JSON
+
+        [
+            {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            },
+            {
+                "inventory_count": 12,
+                "price": 7.99,
+                "title": "Orange cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+            }
+        ]
+
+    """
+
+    User_query = Query()
+    Product_query = Query()
+    current_user_cart = users.get(User_query.username == uname)['cart']
+    affected_products = []
+    for product_id in current_user_cart:
+        products.update(decrement('inventory_count'), Product_query.uri == generate_product_uri(product_id))
+
+    for product_id in set(current_user_cart):
+        affected_products.append(products.get(Product_query.uri == generate_product_uri(product_id)))
+
+    return affected_products
+
+
+
 """Cart functions"""
 
 def add_product_to_cart(uname, product_id):
@@ -468,20 +512,6 @@ def find_func(string, substring):
         return True
 
     return False
-
-
-def decrement_inventories(uname):
-    User_query = Query()
-    Product_query = Query()
-    current_user_cart = users.get(User_query.username == uname)['cart']
-    affected_products = []
-    for product_id in current_user_cart:
-        products.update(decrement('inventory_count'), Product_query.uri == generate_product_uri(product_id))
-
-    for product_id in set(current_user_cart):
-        affected_products.append(products.get(Product_query.uri == generate_product_uri(product_id)))
-
-    return affected_products
 
 
 '''
