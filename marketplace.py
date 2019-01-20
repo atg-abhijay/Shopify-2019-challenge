@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 def sign_up(uname, pwd, email):
     """
-    Signs up a new user to the database.
+    Sign up a new user to the database.
 
     :param str uname: Username (has to be unique)
     :param str pwd: Password
@@ -33,7 +33,7 @@ def sign_up(uname, pwd, email):
 
 def sign_in(uname, pwd):
     """
-    Performs sign in of a user.
+    Perform sign in of a user.
 
     :param str uname: Username
     :param str pwd: Password
@@ -544,6 +544,44 @@ Endpoints
 
 @app.route('/marketplace/api/sign-up', methods=['POST'])
 def route_sign_up():
+    """
+    Sign up a new user to the database.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "johndoe",
+            "password": "gaslbj3l4i",
+            "email": "johndoe@email.com"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "message": "User signed up successfully",
+            "new_user":
+                {
+                    "username": "johndoe",
+                    "email": "johndoe@email.com"
+                    "cart": [
+                        "63f6-bj6m-345k",
+                        "354g-3427-nb38"
+                    ]
+                }
+        }
+
+    :Status Codes:
+        - 201 Created - New user signed up
+        - 400 Bad Request - Malformed request
+
+    """
+
     username, password, email = request.json['username'], request.json['password'], request.json['email']
     error_msg = ""
     error_occured = True
@@ -566,17 +604,46 @@ def route_sign_up():
     uname = sign_up(username, password, email)
     new_user = get_user(uname)
 
-    return jsonify({'message': 'User signed up successfully', 'new_user': new_user})
+    return jsonify({'message': 'User signed up successfully', 'new_user': new_user}), 201
 
 
 @app.route('/marketplace/api/sign-in', methods=['POST'])
 def route_sign_in():
+    """
+    Perform sign in of a user.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "johndoe",
+            "password": "gaslbj3l4i"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "message": "Login successful"
+        }
+
+    :Status Codes:
+        - 200 OK - Login successful
+        - 404 Not found - Username not found
+        - 400 Bad request - Incorrect password
+
+    """
+
     error_code = sign_in(request.json['username'], request.json['password'])
     if error_code == 1:
-        return jsonify({'message': 'Username not found'})
+        abort(404, "Username not found")
 
     if error_code == 2:
-        return jsonify({'message': 'Incorrect password'})
+        abort(400, "Incorrect password")
 
     return jsonify({'message': 'Login successful'})
 
@@ -585,6 +652,40 @@ def route_sign_in():
 
 @app.route('/marketplace/api/add-product', methods=['POST'])
 def route_add_product():
+    """
+    Add product to database.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "inventory_count": 27,
+            "price": 8.49,
+            "title": "Strawberry tart"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "added_product": {
+                "inventory_count": 27,
+                "price": 8.49,
+                "title": "Strawberry tart",
+                "uri": "http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda"
+            }
+        }
+
+    :Status Codes:
+        - 201 Created - Product created/added
+        - 400 Bad request - Malformed request
+
+    """
+
     title, price, inventory = request.json['title'], request.json['price'], request.json['inventory_count']
     error_msg = ""
     error_occured = True
@@ -610,6 +711,38 @@ def route_add_product():
 
 @app.route('/marketplace/api/products', methods=['GET'])
 def route_get_all_products():
+    """
+    Get all the products in the database with inventory greater than zero.
+
+    **Example** -
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "products": [
+                {
+                    "inventory_count": 18,
+                    "price": 15.65,
+                    "title": "Mango pizza",
+                    "uri": "http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9"
+                },
+                {
+                    "inventory_count": 51,
+                    "price": 4.99,
+                    "title": "Guava cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+                },
+            ]
+        }
+
+    :Status Codes:
+        - 200 OK - Products found
+        - 404 Not found - Product(s) not found
+
+    """
+
     all_products = get_all_products()
     if not all_products:
         abort(404, 'Product(s) not found')
@@ -619,6 +752,34 @@ def route_get_all_products():
 
 @app.route('/marketplace/api/product/<pid>', methods=['GET'])
 def route_get_product(pid):
+    """
+    Get a single product from the database by its ID. Only returns product if it has inventory greater than zero.
+
+    **Example** -
+
+    .. code-block:: python
+
+        /marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "product": {
+                "inventory_count": 18,
+                "price": 15.65,
+                "title": "Mango pizza",
+                "uri": "http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Product found
+        - 404 Not found - Product not found
+
+    """
+
     product = get_product(pid)
     if not product:
         abort(404, 'Product not found')
@@ -628,6 +789,43 @@ def route_get_product(pid):
 
 @app.route('/marketplace/api/find-products/<title>', methods=['GET'])
 def route_find_products(title):
+    """
+    Find products in the database whose title match *title* at least partially.
+    Performs case-insensitive search. Only returns products with inventory greater than zero.
+
+    **Example** -
+
+    .. code-block:: python
+
+        /marketplace/api/find-products/PCaK
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "products": [
+                {
+                    "inventory_count": 51,
+                    "price": 4.99,
+                    "title": "Guava cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+                },
+                {
+                    "inventory_count": 12,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                }
+            ]
+        }
+
+    :Status Codes:
+        - 200 OK - Product(s) found
+        - 404 Not found - Product(s) not found
+
+    """
+
     matching_products = find_products(title)
     if not matching_products:
         abort(404, 'Product(s) not found')
@@ -637,6 +835,35 @@ def route_find_products(title):
 
 @app.route('/marketplace/api/delete-product/<pid>', methods=['DELETE'])
 def route_delete_product(pid):
+    """
+    Delete product whose ID matches the given ID from the database.
+
+    **Example**
+
+    .. code-block:: python
+
+        /marketplace/api/delete-product/c6e63640-a8f0-48fb-921e-a2c5467dfdda
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "message": "Product deleted successfully",
+            "removed_product": {
+                "inventory_count": 27,
+                "price": 8.49,
+                "title": "Strawberry tart",
+                "uri": "http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Product deleted
+        - 404 Not found - Product not found
+
+    """
+
     outcome = delete_product(pid)
     if not outcome[0]:
         abort(404, 'Product not found')
