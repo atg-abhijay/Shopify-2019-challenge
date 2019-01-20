@@ -67,7 +67,9 @@ def get_user(uname):
     """
     User_query = Query()
     user = users.get(User_query.username == uname)
-    user.pop('password')
+    if user:
+        user.pop('password')
+
     return user
 
 
@@ -96,5 +98,7 @@ def get_user_by_email(email):
     """
     User_query = Query()
     user = users.get(User_query.email == email)
-    user.pop('password')
+    if user:
+        user.pop('password')
+
     return user
