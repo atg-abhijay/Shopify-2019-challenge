@@ -1,0 +1,1240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>marketplace &#8212; Shopify Dev Challenge 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for marketplace</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">uuid4</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span> <span class="nn">tinydb</span> <span class="k">import</span> <span class="n">TinyDB</span><span class="p">,</span> <span class="n">Query</span>
+<span class="kn">from</span> <span class="nn">tinydb.operations</span> <span class="k">import</span> <span class="n">decrement</span>
+<span class="kn">from</span> <span class="nn">dummy</span> <span class="k">import</span> <span class="n">COMMENT</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">TinyDB</span><span class="p">(</span><span class="s1">&#39;db.json&#39;</span><span class="p">)</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+<span class="n">orders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1">### DB functions ###</span>
+
+<span class="sd">&quot;&quot;&quot;User functions&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">sign_up</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span> <span class="n">pwd</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># Sign up a new user to the database.</span>
+
+    <span class="c1"># :param str uname: Username (has to be unique)</span>
+    <span class="c1"># :param str pwd: Password</span>
+    <span class="c1"># :param str email: Email (has to be unique)</span>
+
+    <span class="c1"># :returns: Username of the new user</span>
+    <span class="c1"># :rtype: *str*</span>
+
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="n">sign_up</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">COMMENT</span>
+    <span class="n">users</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">pwd</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+    <span class="k">return</span> <span class="n">uname</span>
+
+
+<div class="viewcode-block" id="sign_in"><a class="viewcode-back" href="../index.html#marketplace.sign_in">[docs]</a><span class="k">def</span> <span class="nf">sign_in</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span> <span class="n">pwd</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform sign in of a user.</span>
+
+<span class="sd">    :param str uname: Username</span>
+<span class="sd">    :param str pwd: Password</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        * 0 - successful login.</span>
+<span class="sd">        * 1 - user not found.</span>
+<span class="sd">        * 2 - incorrect password.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">found_user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found_user</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">found_user</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pwd</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="get_user"><a class="viewcode-back" href="../index.html#marketplace.get_user">[docs]</a><span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="n">uname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve user based on their username.</span>
+
+<span class="sd">    :param str uname: Username</span>
+
+<span class="sd">    :returns: User whose username matches the passed parameter</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;johndoe&quot;,</span>
+<span class="sd">            &quot;email&quot;: &quot;johndoe@email.com&quot;</span>
+<span class="sd">            &quot;cart&quot;: [</span>
+<span class="sd">                &quot;63f6-bj6m-345k&quot;,</span>
+<span class="sd">                &quot;354g-3427-nb38&quot;</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user</span></div>
+
+
+<div class="viewcode-block" id="get_user_by_email"><a class="viewcode-back" href="../index.html#marketplace.get_user_by_email">[docs]</a><span class="k">def</span> <span class="nf">get_user_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve user based on their email.</span>
+
+<span class="sd">    :param str email: User&#39;s email</span>
+
+<span class="sd">    :returns: User whose username matches the passed parameter</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;johndoe&quot;,</span>
+<span class="sd">            &quot;email&quot;: &quot;johndoe@email.com&quot;</span>
+<span class="sd">            &quot;cart&quot;: [</span>
+<span class="sd">                &quot;63f6-bj6m-345k&quot;,</span>
+<span class="sd">                &quot;354g-3427-nb38&quot;</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">email</span> <span class="o">==</span> <span class="n">email</span><span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;Product functions&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="add_product"><a class="viewcode-back" href="../index.html#marketplace.add_product">[docs]</a><span class="k">def</span> <span class="nf">add_product</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">inventory_count</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add product to database.</span>
+
+<span class="sd">    :param str title: Title of the product</span>
+<span class="sd">    :param float price: Price of the product</span>
+<span class="sd">    :param int inventory_count: Inventory count of the product</span>
+
+<span class="sd">    :returns: ID of the added product</span>
+<span class="sd">    :rtype: *str*</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">product_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">())</span>
+    <span class="n">products</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="n">price</span><span class="p">,</span> <span class="s1">&#39;inventory_count&#39;</span><span class="p">:</span> <span class="n">inventory_count</span><span class="p">,</span>
+                     <span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">product_id</span></div>
+
+
+<div class="viewcode-block" id="get_all_products"><a class="viewcode-back" href="../index.html#marketplace.get_all_products">[docs]</a><span class="k">def</span> <span class="nf">get_all_products</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all the products in the database with inventory greater than zero.</span>
+
+<span class="sd">    :returns: A list of products</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        [</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 18,</span>
+<span class="sd">                &quot;price&quot;: 15.65,</span>
+<span class="sd">                &quot;title&quot;: &quot;Mango pizza&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">products</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">inventory_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_product"><a class="viewcode-back" href="../index.html#marketplace.get_product">[docs]</a><span class="k">def</span> <span class="nf">get_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a single product from the database by its ID. Only returns product if it</span>
+<span class="sd">    has inventory greater than zero.</span>
+
+<span class="sd">    :param str product_id: ID of the product</span>
+
+<span class="sd">    :returns: Product whose ID matches the parameter passed</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))</span>
+                        <span class="o">&amp;</span> <span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">inventory_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="find_products"><a class="viewcode-back" href="../index.html#marketplace.find_products">[docs]</a><span class="k">def</span> <span class="nf">find_products</span><span class="p">(</span><span class="n">search_title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find products in the database whose title match *search_title* at least partially.</span>
+<span class="sd">    Performs case-insensitive search. Only returns products with inventory greater than zero.</span>
+
+<span class="sd">    :param str search_title: Title to search products by</span>
+
+<span class="sd">    :returns: A list of products whose titles match the search title at least partially</span>
+
+<span class="sd">    - Example: For the search title &quot;PCaK&quot;, the products returned are:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        [</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                &quot;price&quot;: 7.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        ]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">products</span><span class="o">.</span><span class="n">search</span><span class="p">((</span><span class="n">Product_query</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">find_func</span><span class="p">,</span> <span class="n">search_title</span><span class="p">))</span>
+                           <span class="o">&amp;</span> <span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">inventory_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="delete_product"><a class="viewcode-back" href="../index.html#marketplace.delete_product">[docs]</a><span class="k">def</span> <span class="nf">delete_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete product whose ID matches *product_id* from the database.</span>
+
+<span class="sd">    :param str product_id: ID of the product to delete</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - A list containing only *False* if the product was not found in the database.</span>
+<span class="sd">        - A list containing *True* and the product that was deleted.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">prod_to_delete</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">prod_to_delete</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span>
+
+    <span class="n">products</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">doc_ids</span><span class="o">=</span><span class="p">[</span><span class="n">prod_to_delete</span><span class="o">.</span><span class="n">doc_id</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">prod_to_delete</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="decrement_inventories"><a class="viewcode-back" href="../index.html#marketplace.decrement_inventories">[docs]</a><span class="k">def</span> <span class="nf">decrement_inventories</span><span class="p">(</span><span class="n">uname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decrement the inventories of the products that</span>
+<span class="sd">    the user purchased.</span>
+
+<span class="sd">    :param str uname: Username</span>
+
+<span class="sd">    :returns: A list of products whose inventories were decreased</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        [</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                &quot;price&quot;: 7.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">current_user_cart</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span>
+    <span class="n">affected_products</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">product_id</span> <span class="ow">in</span> <span class="n">current_user_cart</span><span class="p">:</span>
+        <span class="n">products</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">decrement</span><span class="p">(</span><span class="s1">&#39;inventory_count&#39;</span><span class="p">),</span> <span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">product_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">current_user_cart</span><span class="p">):</span>
+        <span class="n">affected_products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">affected_products</span></div>
+
+
+
+<span class="sd">&quot;&quot;&quot;Cart functions&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="add_product_to_cart"><a class="viewcode-back" href="../index.html#marketplace.add_product_to_cart">[docs]</a><span class="k">def</span> <span class="nf">add_product_to_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add the product with *product_id* to the given user&#39;s cart.</span>
+
+<span class="sd">    :param str uname: Username</span>
+<span class="sd">    :param str product_id: ID of the product to add to the user&#39;s cart</span>
+
+<span class="sd">    :returns: Username along with the product added to the cart</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;,</span>
+<span class="sd">            &quot;product&quot;: {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">current_user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+
+    <span class="n">users</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]},</span> <span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">,</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))}</span></div>
+
+
+<div class="viewcode-block" id="remove_product_from_cart"><a class="viewcode-back" href="../index.html#marketplace.remove_product_from_cart">[docs]</a><span class="k">def</span> <span class="nf">remove_product_from_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove the product with *product_id* from the given user&#39;s cart.</span>
+
+<span class="sd">    :param str uname: Username</span>
+<span class="sd">    :param str product_id: Product to remove from user&#39;s cart</span>
+
+<span class="sd">    :returns: Username along with the product removed from the cart</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;,</span>
+<span class="sd">            &quot;product&quot;: {</span>
+<span class="sd">                &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                &quot;price&quot;: 4.99,</span>
+<span class="sd">                &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">current_user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+    <span class="n">users</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]},</span> <span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">,</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))}</span></div>
+
+
+<div class="viewcode-block" id="get_user_cart"><a class="viewcode-back" href="../index.html#marketplace.get_user_cart">[docs]</a><span class="k">def</span> <span class="nf">get_user_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the given user&#39;s cart.</span>
+
+<span class="sd">    :param str uname: Username</span>
+
+<span class="sd">    :returns: The given user&#39;s cart</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;products&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                    &quot;price&quot;: 4.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;total_price&quot;: 12.98</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">current_user_cart</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span>
+
+    <span class="n">cart</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;total_price&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">product_id</span> <span class="ow">in</span> <span class="n">current_user_cart</span><span class="p">:</span>
+        <span class="n">cart_product</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))</span>
+        <span class="n">cart</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cart_product</span><span class="p">)</span>
+        <span class="n">cart</span><span class="p">[</span><span class="s1">&#39;total_price&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cart_product</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cart</span></div>
+
+
+<div class="viewcode-block" id="clear_user_cart"><a class="viewcode-back" href="../index.html#marketplace.clear_user_cart">[docs]</a><span class="k">def</span> <span class="nf">clear_user_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clear the given user&#39;s cart</span>
+
+<span class="sd">    :param str uname: Username</span>
+
+<span class="sd">    :returns: Username along with their empty cart</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;,</span>
+<span class="sd">            &quot;user_cart&quot;: []</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
+    <span class="n">users</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="p">[]},</span> <span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="n">affected_user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">,</span> <span class="s1">&#39;user_cart&#39;</span><span class="p">:</span> <span class="n">affected_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]}</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;Order functions&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="get_order"><a class="viewcode-back" href="../index.html#marketplace.get_order">[docs]</a><span class="k">def</span> <span class="nf">get_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get order with ID *order_id*.</span>
+
+<span class="sd">    :param str order_id: ID of the order</span>
+
+<span class="sd">    :returns: Order matching ID *order_id*</span>
+<span class="sd">    :rtype: *dict*</span>
+
+<span class="sd">    - Example</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;amount&quot;: 23.97,</span>
+<span class="sd">            &quot;order_id&quot;: &quot;274a5c89-f9ad-4043-a07c-0d545512291b&quot;,</span>
+<span class="sd">            &quot;products&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;username&quot;: &quot;Uraraka&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">orders</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">order_id</span> <span class="o">==</span> <span class="n">order_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_order"><a class="viewcode-back" href="../index.html#marketplace.generate_order">[docs]</a><span class="k">def</span> <span class="nf">generate_order</span><span class="p">(</span><span class="n">uname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate an order for the given user from their cart.</span>
+
+<span class="sd">    :param str uname: Username</span>
+
+<span class="sd">    :returns: Generated order ID</span>
+<span class="sd">    :rtype: *str*</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user_cart</span> <span class="o">=</span> <span class="n">get_user_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span>
+    <span class="n">order_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">())</span>
+    <span class="n">orders</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s1">&#39;order_id&#39;</span><span class="p">:</span> <span class="n">order_id</span><span class="p">,</span> <span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="n">user_cart</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="n">user_cart</span><span class="p">[</span><span class="s1">&#39;total_price&#39;</span><span class="p">],</span> <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">order_id</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;Helper functions&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="generate_product_uri"><a class="viewcode-back" href="../index.html#marketplace.generate_product_uri">[docs]</a><span class="k">def</span> <span class="nf">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a product URI based on its ID.</span>
+
+<span class="sd">    :param str product_id: ID of the product</span>
+
+<span class="sd">    :returns: A URI for the given product</span>
+<span class="sd">    :rtype: *str*</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;route_get_product&#39;</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="n">product_id</span><span class="p">,</span> <span class="n">_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_func"><a class="viewcode-back" href="../index.html#marketplace.find_func">[docs]</a><span class="k">def</span> <span class="nf">find_func</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">substring</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if one string is present in another string.</span>
+
+<span class="sd">    :param str string: String to check in</span>
+<span class="sd">    :param str substring: Substring we are interested in</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - *True* if the substring is present in the string</span>
+<span class="sd">        - *False* if the substring is *not* present in the string</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">substring</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Endpoints</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">&quot;&quot;&quot;User endpoints&quot;&quot;&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/sign-up&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_sign_up</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sign up a new user to the database.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;johndoe&quot;,</span>
+<span class="sd">            &quot;password&quot;: &quot;gaslbj3l4i&quot;,</span>
+<span class="sd">            &quot;email&quot;: &quot;johndoe@email.com&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;message&quot;: &quot;User signed up successfully&quot;,</span>
+<span class="sd">            &quot;new_user&quot;:</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;username&quot;: &quot;johndoe&quot;,</span>
+<span class="sd">                    &quot;email&quot;: &quot;johndoe@email.com&quot;</span>
+<span class="sd">                    &quot;cart&quot;: [</span>
+<span class="sd">                        &quot;63f6-bj6m-345k&quot;,</span>
+<span class="sd">                        &quot;354g-3427-nb38&quot;</span>
+<span class="sd">                    ]</span>
+<span class="sd">                }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 201 Created - New user signed up</span>
+<span class="sd">        - 400 Bad Request - Malformed request</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+    <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">error_occured</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Username not provided&quot;</span>
+    <span class="k">elif</span> <span class="n">get_user</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Username already being used&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Password not provided&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">email</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Email not provided&quot;</span>
+    <span class="k">elif</span> <span class="n">get_user_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Email already registered&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_occured</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">error_occured</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
+
+    <span class="n">uname</span> <span class="o">=</span> <span class="n">sign_up</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+    <span class="n">new_user</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;User signed up successfully&#39;</span><span class="p">,</span> <span class="s1">&#39;new_user&#39;</span><span class="p">:</span> <span class="n">new_user</span><span class="p">}),</span> <span class="mi">201</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/sign-in&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_sign_in</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform sign in of a user.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;johndoe&quot;,</span>
+<span class="sd">            &quot;password&quot;: &quot;gaslbj3l4i&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;message&quot;: &quot;Login successful&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Login successful</span>
+<span class="sd">        - 404 Not found - Username not found</span>
+<span class="sd">        - 400 Bad request - Incorrect password</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">error_code</span> <span class="o">=</span> <span class="n">sign_in</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Username not found&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Incorrect password&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Login successful&#39;</span><span class="p">})</span>
+
+
+<span class="sd">&quot;&quot;&quot;Product endpoints&quot;&quot;&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/add-product&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_add_product</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add product to database.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;inventory_count&quot;: 27,</span>
+<span class="sd">            &quot;price&quot;: 8.49,</span>
+<span class="sd">            &quot;title&quot;: &quot;Strawberry tart&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;added_product&quot;: {</span>
+<span class="sd">                &quot;inventory_count&quot;: 27,</span>
+<span class="sd">                &quot;price&quot;: 8.49,</span>
+<span class="sd">                &quot;title&quot;: &quot;Strawberry tart&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 201 Created - Product created/added</span>
+<span class="sd">        - 400 Bad request - Malformed request</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">title</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">inventory</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;inventory_count&#39;</span><span class="p">]</span>
+    <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">error_occured</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Title of product is missing&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">price</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Price of product has to be a number&quot;</span>
+    <span class="k">elif</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Price of product has to be non-negative&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inventory</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Inventory of product has to be a number&quot;</span>
+    <span class="k">elif</span> <span class="n">inventory</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Inventory of product has to be non-negative&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_occured</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">error_occured</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
+
+    <span class="n">new_product_id</span> <span class="o">=</span> <span class="n">add_product</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">inventory</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;added_product&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="n">price</span><span class="p">,</span> <span class="s1">&#39;inventory_count&#39;</span><span class="p">:</span> <span class="n">inventory</span><span class="p">,</span> <span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">new_product_id</span><span class="p">)}}),</span> <span class="mi">201</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/products&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_get_all_products</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all the products in the database with inventory greater than zero.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;products&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 18,</span>
+<span class="sd">                    &quot;price&quot;: 15.65,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Mango pizza&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                    &quot;price&quot;: 4.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Products found</span>
+<span class="sd">        - 404 Not found - Product(s) not found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">all_products</span> <span class="o">=</span> <span class="n">get_all_products</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_products</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;Product(s) not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="n">all_products</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/product/&lt;pid&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_get_product</span><span class="p">(</span><span class="n">pid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a single product from the database by its ID. Only returns product if it has inventory greater than zero.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        /marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;product&quot;: {</span>
+<span class="sd">                &quot;inventory_count&quot;: 18,</span>
+<span class="sd">                &quot;price&quot;: 15.65,</span>
+<span class="sd">                &quot;title&quot;: &quot;Mango pizza&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Product found</span>
+<span class="sd">        - 404 Not found - Product not found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">product</span> <span class="o">=</span> <span class="n">get_product</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">product</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;Product not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="n">product</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/find-products/&lt;title&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_find_products</span><span class="p">(</span><span class="n">title</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find products in the database whose title match *title* at least partially.</span>
+<span class="sd">    Performs case-insensitive search. Only returns products with inventory greater than zero.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        /marketplace/api/find-products/PCaK</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;products&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                    &quot;price&quot;: 4.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Product(s) found</span>
+<span class="sd">        - 404 Not found - Product(s) not found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">matching_products</span> <span class="o">=</span> <span class="n">find_products</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matching_products</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;Product(s) not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="n">matching_products</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/delete-product/&lt;pid&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_delete_product</span><span class="p">(</span><span class="n">pid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete product whose ID matches the given ID from the database.</span>
+
+<span class="sd">    **Example**</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        /marketplace/api/delete-product/c6e63640-a8f0-48fb-921e-a2c5467dfdda</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;message&quot;: &quot;Product deleted successfully&quot;,</span>
+<span class="sd">            &quot;removed_product&quot;: {</span>
+<span class="sd">                &quot;inventory_count&quot;: 27,</span>
+<span class="sd">                &quot;price&quot;: 8.49,</span>
+<span class="sd">                &quot;title&quot;: &quot;Strawberry tart&quot;,</span>
+<span class="sd">                &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Product deleted</span>
+<span class="sd">        - 404 Not found - Product not found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">outcome</span> <span class="o">=</span> <span class="n">delete_product</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">outcome</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;Product not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;removed_product&#39;</span><span class="p">:</span> <span class="n">outcome</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Product deleted successfully&#39;</span><span class="p">})</span>
+
+
+<span class="sd">&quot;&quot;&quot;Cart endpoints&quot;&quot;&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/add-product-to-cart&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_add_product_to_cart</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add the given product to the given user&#39;s cart.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;,</span>
+<span class="sd">            &quot;product_id&quot;: &quot;a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;added_product_to_cart&quot;: {</span>
+<span class="sd">                &quot;message&quot;: &quot;Product added to cart successfully&quot;,</span>
+<span class="sd">                &quot;product&quot;: {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                    &quot;price&quot;: 4.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;username&quot;: &quot;Midoriya&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Product added to user&#39;s cart</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">uname_product</span> <span class="o">=</span> <span class="n">add_product_to_cart</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;product_id&#39;</span><span class="p">])</span>
+    <span class="n">uname_product</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Product added to cart successfully&quot;</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;added_product_to_cart&#39;</span><span class="p">:</span> <span class="n">uname_product</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/remove-product-from-cart&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_remove_product_from_cart</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove the given product from the given user&#39;s cart.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;,</span>
+<span class="sd">            &quot;product_id&quot;: &quot;a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;removed_product_from_cart&quot;: {</span>
+<span class="sd">                &quot;message&quot;: &quot;Product removed from cart successfully&quot;,</span>
+<span class="sd">                &quot;product&quot;: {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 51,</span>
+<span class="sd">                    &quot;price&quot;: 4.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Guava cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;username&quot;: &quot;Midoriya&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Product removed from user&#39;s cart</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">uname_product</span> <span class="o">=</span> <span class="n">remove_product_from_cart</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;product_id&#39;</span><span class="p">])</span>
+    <span class="n">uname_product</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Product removed from cart successfully&quot;</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;removed_product_from_cart&#39;</span><span class="p">:</span> <span class="n">uname_product</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/get-user-cart&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_get_user_cart</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the given user&#39;s cart.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Uraraka&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;user_cart&quot;: {</span>
+<span class="sd">                &quot;products&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;total_price&quot;: 15.98</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;username&quot;: &quot;Uraraka&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Retrieved user&#39;s cart</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">get_user_cart</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;user_cart&#39;</span><span class="p">:</span> <span class="n">cart</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/complete-cart&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_complete_cart</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Complete the given user&#39;s cart. The cart is used to generate</span>
+<span class="sd">    an order. The user&#39;s cart is cleared. The inventories of the</span>
+<span class="sd">    products purchased by the user are decremented.</span>
+
+<span class="sd">    Return the order information along with the product(s) whose</span>
+<span class="sd">    inventories were decremented.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    :Request JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;username&quot;: &quot;Midoriya&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;affected_products&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;inventory_count&quot;: 7,</span>
+<span class="sd">                    &quot;price&quot;: 7.99,</span>
+<span class="sd">                    &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                    &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;order&quot;: {</span>
+<span class="sd">                &quot;amount&quot;: 15.98,</span>
+<span class="sd">                &quot;order_id&quot;: &quot;baef750f-9c54-41f8-a7a5-647640ff62d1&quot;,</span>
+<span class="sd">                &quot;products&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 7,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 7,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;username&quot;: &quot;Uraraka&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Cart completed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+    <span class="n">affected_products</span> <span class="o">=</span> <span class="n">decrement_inventories</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">get_order</span><span class="p">(</span><span class="n">generate_order</span><span class="p">(</span><span class="n">username</span><span class="p">))</span>
+    <span class="n">clear_user_cart</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;order&#39;</span><span class="p">:</span> <span class="n">order</span><span class="p">,</span> <span class="s1">&#39;affected_products&#39;</span><span class="p">:</span> <span class="n">affected_products</span><span class="p">})</span>
+
+
+<span class="sd">&quot;&quot;&quot;Order endpoints&quot;&quot;&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/marketplace/api/order/&lt;order_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">route_get_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get order with the given ID.</span>
+
+<span class="sd">    **Example** -</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        /marketplace/api/order/274a5c89-f9ad-4043-a07c-0d545512291b</span>
+
+<span class="sd">    :Response JSON Object:</span>
+
+<span class="sd">    .. code-block:: JSON</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;order&quot;: {</span>
+<span class="sd">                &quot;amount&quot;: 23.97,</span>
+<span class="sd">                &quot;order_id&quot;: &quot;274a5c89-f9ad-4043-a07c-0d545512291b&quot;,</span>
+<span class="sd">                &quot;products&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;inventory_count&quot;: 12,</span>
+<span class="sd">                        &quot;price&quot;: 7.99,</span>
+<span class="sd">                        &quot;title&quot;: &quot;Orange cupcake&quot;,</span>
+<span class="sd">                        &quot;uri&quot;: &quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;username&quot;: &quot;Midoriya&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    :Status Codes:</span>
+<span class="sd">        - 200 OK - Order found</span>
+<span class="sd">        - 404 Not found - Order *not* found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">get_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">order</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;Order not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;order&#39;</span><span class="p">:</span> <span class="n">order</span><span class="p">})</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Error handling</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a 404 (Not found) error with a custom message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">error</span><span class="o">.</span><span class="n">description</span><span class="p">}),</span> <span class="mi">404</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bad_request</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a 400 (Bad request) error with a custom message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">error</span><span class="o">.</span><span class="n">description</span><span class="p">}),</span> <span class="mi">400</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Abhijay Gupta.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

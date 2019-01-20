@@ -1,0 +1,1324 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Shopify Dev Challenge’s documentation &#8212; Shopify Dev Challenge 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="shopify-dev-challenge-s-documentation">
+<h1>Shopify Dev Challenge’s documentation<a class="headerlink" href="#shopify-dev-challenge-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="database-functions">
+<h2>Database functions<a class="headerlink" href="#database-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-marketplace">
+<span id="user-functions"></span><h3>User functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="marketplace.sign_in">
+<code class="descclassname">marketplace.</code><code class="descname">sign_in</code><span class="sig-paren">(</span><em>uname</em>, <em>pwd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#sign_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.sign_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform sign in of a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uname</strong> (<em>str</em>) – Username</li>
+<li><strong>pwd</strong> (<em>str</em>) – Password</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li>0 - successful login.</li>
+<li>1 - user not found.</li>
+<li>2 - incorrect password.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.get_user">
+<code class="descclassname">marketplace.</code><code class="descname">get_user</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve user based on their username.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uname</strong> (<em>str</em>) – Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">User whose username matches the passed parameter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe@email.com&quot;</span>
+    <span class="s2">&quot;cart&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;63f6-bj6m-345k&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;354g-3427-nb38&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.get_user_by_email">
+<code class="descclassname">marketplace.</code><code class="descname">get_user_by_email</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user_by_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve user based on their email.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<em>str</em>) – User’s email</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">User whose username matches the passed parameter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe@email.com&quot;</span>
+    <span class="s2">&quot;cart&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;63f6-bj6m-345k&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;354g-3427-nb38&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-marketplace">
+<span id="product-functions"></span><h3>Product functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="marketplace.add_product">
+<code class="descclassname">marketplace.</code><code class="descname">add_product</code><span class="sig-paren">(</span><em>title</em>, <em>price</em>, <em>inventory_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#add_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.add_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add product to database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>title</strong> (<em>str</em>) – Title of the product</li>
+<li><strong>price</strong> (<em>float</em>) – Price of the product</li>
+<li><strong>inventory_count</strong> (<em>int</em>) – Inventory count of the product</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ID of the added product</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><em>str</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.get_all_products">
+<code class="descclassname">marketplace.</code><code class="descname">get_all_products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_all_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_all_products" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the products in the database with inventory greater than zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of products</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">15.65</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango pizza&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.get_product">
+<code class="descclassname">marketplace.</code><code class="descname">get_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single product from the database by its ID. Only returns product if it
+has inventory greater than zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>product_id</strong> (<em>str</em>) – ID of the product</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Product whose ID matches the parameter passed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.find_products">
+<code class="descclassname">marketplace.</code><code class="descname">find_products</code><span class="sig-paren">(</span><em>search_title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#find_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.find_products" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find products in the database whose title match <em>search_title</em> at least partially.
+Performs case-insensitive search. Only returns products with inventory greater than zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>search_title</strong> (<em>str</em>) – Title to search products by</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of products whose titles match the search title at least partially</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example: For the search title “PCaK”, the products returned are:</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.delete_product">
+<code class="descclassname">marketplace.</code><code class="descname">delete_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#delete_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.delete_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete product whose ID matches <em>product_id</em> from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>product_id</strong> (<em>str</em>) – ID of the product to delete</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li>A list containing only <em>False</em> if the product was not found in the database.</li>
+<li>A list containing <em>True</em> and the product that was deleted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.decrement_inventories">
+<code class="descclassname">marketplace.</code><code class="descname">decrement_inventories</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#decrement_inventories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.decrement_inventories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrement the inventories of the products that
+the user purchased.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uname</strong> (<em>str</em>) – Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of products whose inventories were decreased</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-marketplace">
+<span id="cart-functions"></span><h3>Cart functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="marketplace.add_product_to_cart">
+<code class="descclassname">marketplace.</code><code class="descname">add_product_to_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#add_product_to_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.add_product_to_cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the product with <em>product_id</em> to the given user’s cart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uname</strong> (<em>str</em>) – Username</li>
+<li><strong>product_id</strong> (<em>str</em>) – ID of the product to add to the user’s cart</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Username along with the product added to the cart</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><em>dict</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.remove_product_from_cart">
+<code class="descclassname">marketplace.</code><code class="descname">remove_product_from_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#remove_product_from_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.remove_product_from_cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the product with <em>product_id</em> from the given user’s cart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uname</strong> (<em>str</em>) – Username</li>
+<li><strong>product_id</strong> (<em>str</em>) – Product to remove from user’s cart</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Username along with the product removed from the cart</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><em>dict</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.get_user_cart">
+<code class="descclassname">marketplace.</code><code class="descname">get_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user_cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the given user’s cart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uname</strong> (<em>str</em>) – Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The given user’s cart</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;total_price&quot;</span><span class="p">:</span> <span class="mf">12.98</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.clear_user_cart">
+<code class="descclassname">marketplace.</code><code class="descname">clear_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#clear_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.clear_user_cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the given user’s cart</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uname</strong> (<em>str</em>) – Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Username along with their empty cart</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;user_cart&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-marketplace">
+<span id="order-functions"></span><h3>Order functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="marketplace.get_order">
+<code class="descclassname">marketplace.</code><code class="descname">get_order</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get order with ID <em>order_id</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>order_id</strong> (<em>str</em>) – ID of the order</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Order matching ID <em>order_id</em></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>dict</em></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Example</li>
+</ul>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">23.97</span><span class="p">,</span>
+    <span class="nt">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;274a5c89-f9ad-4043-a07c-0d545512291b&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Uraraka&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.generate_order">
+<code class="descclassname">marketplace.</code><code class="descname">generate_order</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#generate_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.generate_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an order for the given user from their cart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uname</strong> (<em>str</em>) – Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Generated order ID</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>str</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-marketplace">
+<span id="helper-functions"></span><h3>Helper functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="marketplace.generate_product_uri">
+<code class="descclassname">marketplace.</code><code class="descname">generate_product_uri</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#generate_product_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.generate_product_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a product URI based on its ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>product_id</strong> (<em>str</em>) – ID of the product</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A URI for the given product</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><em>str</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="marketplace.find_func">
+<code class="descclassname">marketplace.</code><code class="descname">find_func</code><span class="sig-paren">(</span><em>string</em>, <em>substring</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#find_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.find_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if one string is present in another string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) – String to check in</li>
+<li><strong>substring</strong> (<em>str</em>) – Substring we are interested in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>True</em> if the substring is present in the string</li>
+<li><em>False</em> if the substring is <em>not</em> present in the string</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="user-endpoints">
+<h3>User endpoints<a class="headerlink" href="#user-endpoints" title="Permalink to this headline">¶</a></h3>
+<dl class="post">
+<dt id="post--marketplace-api-sign-up">
+<code class="descname">POST </code><code class="descname">/marketplace/api/sign-up</code><a class="headerlink" href="#post--marketplace-api-sign-up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign up a new user to the database.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;gaslbj3l4i&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe@email.com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;User signed up successfully&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;new_user&quot;</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe@email.com&quot;</span>
+            <span class="s2">&quot;cart&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;63f6-bj6m-345k&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;354g-3427-nb38&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>201 Created - New user signed up</li>
+<li>400 Bad Request - Malformed request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--marketplace-api-sign-in">
+<code class="descname">POST </code><code class="descname">/marketplace/api/sign-in</code><a class="headerlink" href="#post--marketplace-api-sign-in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform sign in of a user.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;johndoe&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;gaslbj3l4i&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Login successful&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Login successful</li>
+<li>404 Not found - Username not found</li>
+<li>400 Bad request - Incorrect password</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="product-endpoints">
+<h3>Product endpoints<a class="headerlink" href="#product-endpoints" title="Permalink to this headline">¶</a></h3>
+<dl class="post">
+<dt id="post--marketplace-api-add-product">
+<code class="descname">POST </code><code class="descname">/marketplace/api/add-product</code><a class="headerlink" href="#post--marketplace-api-add-product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add product to database.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">8.49</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Strawberry tart&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;added_product&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">8.49</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Strawberry tart&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>201 Created - Product created/added</li>
+<li>400 Bad request - Malformed request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--marketplace-api-products">
+<code class="descname">GET </code><code class="descname">/marketplace/api/products</code><a class="headerlink" href="#get--marketplace-api-products" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the products in the database with inventory greater than zero.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">15.65</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango pizza&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Products found</li>
+<li>404 Not found - Product(s) not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--marketplace-api-product-(pid)">
+<code class="descname">GET </code><code class="descname">/marketplace/api/product/</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span><a class="headerlink" href="#get--marketplace-api-product-(pid)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single product from the database by its ID. Only returns product if it has inventory greater than zero.</p>
+<p><strong>Example</strong> -</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">marketplace</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">product</span><span class="o">/</span><span class="mi">84</span><span class="n">a1c5d6</span><span class="o">-</span><span class="n">d1fd</span><span class="o">-</span><span class="mi">4</span><span class="n">db0</span><span class="o">-</span><span class="n">bc1e</span><span class="o">-</span><span class="n">f450a70ca7d9</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">15.65</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango pizza&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Product found</li>
+<li>404 Not found - Product not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--marketplace-api-find-products-(title)">
+<code class="descname">GET </code><code class="descname">/marketplace/api/find-products/</code><span class="sig-paren">(</span><em>title</em><span class="sig-paren">)</span><a class="headerlink" href="#get--marketplace-api-find-products-(title)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find products in the database whose title match <em>title</em> at least partially.
+Performs case-insensitive search. Only returns products with inventory greater than zero.</p>
+<p><strong>Example</strong> -</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">marketplace</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">find</span><span class="o">-</span><span class="n">products</span><span class="o">/</span><span class="n">PCaK</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Product(s) found</li>
+<li>404 Not found - Product(s) not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="delete">
+<dt id="delete--marketplace-api-delete-product-(pid)">
+<code class="descname">DELETE </code><code class="descname">/marketplace/api/delete-product/</code><span class="sig-paren">(</span><em>pid</em><span class="sig-paren">)</span><a class="headerlink" href="#delete--marketplace-api-delete-product-(pid)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete product whose ID matches the given ID from the database.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">marketplace</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">delete</span><span class="o">-</span><span class="n">product</span><span class="o">/</span><span class="n">c6e63640</span><span class="o">-</span><span class="n">a8f0</span><span class="o">-</span><span class="mi">48</span><span class="n">fb</span><span class="o">-</span><span class="mi">921</span><span class="n">e</span><span class="o">-</span><span class="n">a2c5467dfdda</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Product deleted successfully&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;removed_product&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+        <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">8.49</span><span class="p">,</span>
+        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Strawberry tart&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/c6e63640-a8f0-48fb-921e-a2c5467dfdda&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Product deleted</li>
+<li>404 Not found - Product not found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="cart-endpoints">
+<h3>Cart endpoints<a class="headerlink" href="#cart-endpoints" title="Permalink to this headline">¶</a></h3>
+<dl class="post">
+<dt id="post--marketplace-api-add-product-to-cart">
+<code class="descname">POST </code><code class="descname">/marketplace/api/add-product-to-cart</code><a class="headerlink" href="#post--marketplace-api-add-product-to-cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given product to the given user’s cart.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;product_id&quot;</span><span class="p">:</span> <span class="s2">&quot;a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;added_product_to_cart&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Product added to cart successfully&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Product added to user’s cart</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="delete">
+<dt id="delete--marketplace-api-remove-product-from-cart">
+<code class="descname">DELETE </code><code class="descname">/marketplace/api/remove-product-from-cart</code><a class="headerlink" href="#delete--marketplace-api-remove-product-from-cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given product from the given user’s cart.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;product_id&quot;</span><span class="p">:</span> <span class="s2">&quot;a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;removed_product_from_cart&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Product removed from cart successfully&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">4.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Guava cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Product removed from user’s cart</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--marketplace-api-get-user-cart">
+<code class="descname">POST </code><code class="descname">/marketplace/api/get-user-cart</code><a class="headerlink" href="#post--marketplace-api-get-user-cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the given user’s cart.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Uraraka&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;user_cart&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;total_price&quot;</span><span class="p">:</span> <span class="mf">15.98</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Uraraka&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Retrieved user’s cart</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--marketplace-api-complete-cart">
+<code class="descname">POST </code><code class="descname">/marketplace/api/complete-cart</code><a class="headerlink" href="#post--marketplace-api-complete-cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Complete the given user’s cart. The cart is used to generate
+an order. The user’s cart is cleared. The inventories of the
+products purchased by the user are decremented.</p>
+<p>Return the order information along with the product(s) whose
+inventories were decremented.</p>
+<p><strong>Example</strong> -</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;affected_products&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+            <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;order&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">15.98</span><span class="p">,</span>
+        <span class="nt">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;baef750f-9c54-41f8-a7a5-647640ff62d1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Uraraka&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Cart completed</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="order-endpoints">
+<h3>Order endpoints<a class="headerlink" href="#order-endpoints" title="Permalink to this headline">¶</a></h3>
+<dl class="get">
+<dt id="get--marketplace-api-order-(order_id)">
+<code class="descname">GET </code><code class="descname">/marketplace/api/order/</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--marketplace-api-order-(order_id)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get order with the given ID.</p>
+<p><strong>Example</strong> -</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">marketplace</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">order</span><span class="o">/</span><span class="mi">274</span><span class="n">a5c89</span><span class="o">-</span><span class="n">f9ad</span><span class="o">-</span><span class="mi">4043</span><span class="o">-</span><span class="n">a07c</span><span class="o">-</span><span class="mi">0</span><span class="n">d545512291b</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;order&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">23.97</span><span class="p">,</span>
+        <span class="nt">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;274a5c89-f9ad-4043-a07c-0d545512291b&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;products&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;inventory_count&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="mf">7.99</span><span class="p">,</span>
+                <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orange cupcake&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;uri&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f&quot;</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Midoriya&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li>200 OK - Order found</li>
+<li>404 Not found - Order <em>not</em> found</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Shopify Dev Challenge’s documentation</a><ul>
+<li><a class="reference internal" href="#database-functions">Database functions</a><ul>
+<li><a class="reference internal" href="#module-marketplace">User functions</a></li>
+<li><a class="reference internal" href="#module-marketplace">Product functions</a></li>
+<li><a class="reference internal" href="#module-marketplace">Cart functions</a></li>
+<li><a class="reference internal" href="#module-marketplace">Order functions</a></li>
+<li><a class="reference internal" href="#module-marketplace">Helper functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#endpoints">Endpoints</a><ul>
+<li><a class="reference internal" href="#user-endpoints">User endpoints</a></li>
+<li><a class="reference internal" href="#product-endpoints">Product endpoints</a></li>
+<li><a class="reference internal" href="#cart-endpoints">Cart endpoints</a></li>
+<li><a class="reference internal" href="#order-endpoints">Order endpoints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Abhijay Gupta.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
