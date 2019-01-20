@@ -71,8 +71,12 @@ def remove_product_from_cart(uname, product_id):
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
-    current_user['cart'].remove(product_id)
-    users.update({'cart': current_user['cart']}, User_query.username == uname)
+    if product_id in current_user['cart']:
+        current_user['cart'].remove(product_id)
+        users.update({'cart': current_user['cart']}, User_query.username == uname)
+
+    else:
+        return {}
 
     return {'username': uname, 'product': products.get(Product_query.uri == generate_product_uri(product_id))}
 

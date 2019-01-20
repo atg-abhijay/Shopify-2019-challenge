@@ -434,6 +434,9 @@ def route_remove_product_from_cart():
     """
 
     uname_product = remove_product_from_cart(request.json['username'], request.json['product_id'])
+    if not uname_product:
+        abort(404, 'Product not in cart anymore')
+
     uname_product['message'] = "Product removed from cart successfully"
 
     return jsonify({'removed_product_from_cart': uname_product})
