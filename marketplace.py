@@ -1083,6 +1083,53 @@ def route_complete_cart():
 
 @app.route('/marketplace/api/order/<order_id>', methods=['GET'])
 def route_get_order(order_id):
+    """
+    Get order with the given ID.
+
+    **Example** -
+
+    .. code-block:: python
+
+        /marketplace/api/order/274a5c89-f9ad-4043-a07c-0d545512291b
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "order": {
+                "amount": 23.97,
+                "order_id": "274a5c89-f9ad-4043-a07c-0d545512291b",
+                "products": [
+                    {
+                        "inventory_count": 12,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    },
+                    {
+                        "inventory_count": 12,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    },
+                    {
+                        "inventory_count": 12,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    }
+                ],
+                "username": "Midoriya"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Order found
+        - 404 Not found - Order *not* found
+
+    """
+
     order = get_order(order_id)
     if not order:
         abort(404, 'Order not found')
@@ -1096,11 +1143,17 @@ Error handling
 
 @app.errorhandler(404)
 def not_found(error):
+    """
+    Return a 404 (Not found) error with a custom message.
+    """
     return make_response(jsonify({'message': error.description}), 404)
 
 
 @app.errorhandler(400)
 def bad_request(error):
+    """
+    Return a 400 (Bad request) error with a custom message.
+    """
     return make_response(jsonify({'message': error.description}), 400)
 
 
