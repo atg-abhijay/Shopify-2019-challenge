@@ -366,7 +366,7 @@ def remove_product_from_cart(uname, product_id):
 
 def get_user_cart(uname):
     """
-    Get the given user's cart
+    Get the given user's cart.
 
     :param str uname: Username
 
@@ -875,6 +875,42 @@ def route_delete_product(pid):
 
 @app.route('/marketplace/api/add-product-to-cart', methods=['POST'])
 def route_add_product_to_cart():
+    """
+    Add the given product to the given user's cart.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya",
+            "product_id": "a37b3418-cc8f-40fa-8d63-661b3912eb71"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "added_product_to_cart": {
+                "message": "Product added to cart successfully",
+                "product": {
+                    "inventory_count": 51,
+                    "price": 4.99,
+                    "title": "Guava cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+                },
+                "username": "Midoriya"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Product added to user's cart
+
+    """
+
     uname_product = add_product_to_cart(request.json['username'], request.json['product_id'])
     uname_product['message'] = "Product added to cart successfully"
 
@@ -883,6 +919,42 @@ def route_add_product_to_cart():
 
 @app.route('/marketplace/api/remove-product-from-cart', methods=['DELETE'])
 def route_remove_product_from_cart():
+    """
+    Remove the given product from the given user's cart.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya",
+            "product_id": "a37b3418-cc8f-40fa-8d63-661b3912eb71"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "removed_product_from_cart": {
+                "message": "Product removed from cart successfully",
+                "product": {
+                    "inventory_count": 51,
+                    "price": 4.99,
+                    "title": "Guava cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+                },
+                "username": "Midoriya"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Product removed from user's cart
+
+    """
+
     uname_product = remove_product_from_cart(request.json['username'], request.json['product_id'])
     uname_product['message'] = "Product removed from cart successfully"
 
@@ -891,6 +963,49 @@ def route_remove_product_from_cart():
 
 @app.route('/marketplace/api/get-user-cart', methods=['POST'])
 def route_get_user_cart():
+    """
+    Get the given user's cart.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "Uraraka"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "user_cart": {
+                "products": [
+                    {
+                        "inventory_count": 12,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    },
+                    {
+                        "inventory_count": 12,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    }
+                ],
+                "total_price": 15.98
+            },
+            "username": "Uraraka"
+        }
+
+    :Status Codes:
+        - 200 OK - Retrieved user's cart
+
+    """
+
     username = request.json['username']
     cart = get_user_cart(username)
 
@@ -899,6 +1014,63 @@ def route_get_user_cart():
 
 @app.route('/marketplace/api/complete-cart', methods=['POST'])
 def route_complete_cart():
+    """
+    Complete the given user's cart. The cart is used to generate
+    an order. The user's cart is cleared. The inventories of the
+    products purchased by the user are decremented.
+
+    Return the order information along with the product(s) whose
+    inventories were decremented.
+
+    **Example** -
+
+    :Request JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya"
+        }
+
+    :Response JSON Object:
+
+    .. code-block:: JSON
+
+        {
+            "affected_products": [
+                {
+                    "inventory_count": 7,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                }
+            ],
+            "order": {
+                "amount": 15.98,
+                "order_id": "baef750f-9c54-41f8-a7a5-647640ff62d1",
+                "products": [
+                    {
+                        "inventory_count": 7,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    },
+                    {
+                        "inventory_count": 7,
+                        "price": 7.99,
+                        "title": "Orange cupcake",
+                        "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                    },
+                ],
+                "username": "Uraraka"
+            }
+        }
+
+    :Status Codes:
+        - 200 OK - Cart completed
+
+    """
+
     username = request.json['username']
     affected_products = decrement_inventories(username)
     order = get_order(generate_order(username))
