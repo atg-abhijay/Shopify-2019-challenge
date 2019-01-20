@@ -35,11 +35,36 @@
 </div>
 <div class="section" id="database-functions">
 <h2>Database functions<a class="headerlink" href="#database-functions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="module-marketplace">
-<span id="user-functions"></span><h3>User functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-user_functions">
+<span id="user-functions"></span><h3>User functions<a class="headerlink" href="#module-user_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="marketplace.sign_in">
-<code class="descclassname">marketplace.</code><code class="descname">sign_in</code><span class="sig-paren">(</span><em>uname</em>, <em>pwd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#sign_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.sign_in" title="Permalink to this definition">¶</a></dt>
+<dt id="user_functions.sign_up">
+<code class="descclassname">user_functions.</code><code class="descname">sign_up</code><span class="sig-paren">(</span><em>uname</em>, <em>pwd</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_functions.html#sign_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#user_functions.sign_up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign up a new user to the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uname</strong> (<em>str</em>) – Username (has to be unique)</li>
+<li><strong>pwd</strong> (<em>str</em>) – Password</li>
+<li><strong>email</strong> (<em>str</em>) – Email (has to be unique)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Username of the new user</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><em>str</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_functions.sign_in">
+<code class="descclassname">user_functions.</code><code class="descname">sign_in</code><span class="sig-paren">(</span><em>uname</em>, <em>pwd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_functions.html#sign_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#user_functions.sign_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform sign in of a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -64,8 +89,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.get_user">
-<code class="descclassname">marketplace.</code><code class="descname">get_user</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user" title="Permalink to this definition">¶</a></dt>
+<dt id="user_functions.get_user">
+<code class="descclassname">user_functions.</code><code class="descname">get_user</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_functions.html#get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#user_functions.get_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve user based on their username.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -95,8 +120,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.get_user_by_email">
-<code class="descclassname">marketplace.</code><code class="descname">get_user_by_email</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user_by_email" title="Permalink to this definition">¶</a></dt>
+<dt id="user_functions.get_user_by_email">
+<code class="descclassname">user_functions.</code><code class="descname">get_user_by_email</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_functions.html#get_user_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#user_functions.get_user_by_email" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve user based on their email.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -126,11 +151,11 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-marketplace">
-<span id="product-functions"></span><h3>Product functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-product_functions">
+<span id="product-functions"></span><h3>Product functions<a class="headerlink" href="#module-product_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="marketplace.add_product">
-<code class="descclassname">marketplace.</code><code class="descname">add_product</code><span class="sig-paren">(</span><em>title</em>, <em>price</em>, <em>inventory_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#add_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.add_product" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.add_product">
+<code class="descclassname">product_functions.</code><code class="descname">add_product</code><span class="sig-paren">(</span><em>title</em>, <em>price</em>, <em>inventory_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#add_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.add_product" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add product to database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,8 +179,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.get_all_products">
-<code class="descclassname">marketplace.</code><code class="descname">get_all_products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_all_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_all_products" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.get_all_products">
+<code class="descclassname">product_functions.</code><code class="descname">get_all_products</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#get_all_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.get_all_products" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the products in the database with inventory greater than zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -187,8 +212,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.get_product">
-<code class="descclassname">marketplace.</code><code class="descname">get_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_product" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.get_product">
+<code class="descclassname">product_functions.</code><code class="descname">get_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#get_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.get_product" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single product from the database by its ID. Only returns product if it
 has inventory greater than zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -217,8 +242,8 @@ has inventory greater than zero.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.find_products">
-<code class="descclassname">marketplace.</code><code class="descname">find_products</code><span class="sig-paren">(</span><em>search_title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#find_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.find_products" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.find_products">
+<code class="descclassname">product_functions.</code><code class="descname">find_products</code><span class="sig-paren">(</span><em>search_title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#find_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.find_products" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find products in the database whose title match <em>search_title</em> at least partially.
 Performs case-insensitive search. Only returns products with inventory greater than zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -253,8 +278,8 @@ Performs case-insensitive search. Only returns products with inventory greater t
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.delete_product">
-<code class="descclassname">marketplace.</code><code class="descname">delete_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#delete_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.delete_product" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.delete_product">
+<code class="descclassname">product_functions.</code><code class="descname">delete_product</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#delete_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.delete_product" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete product whose ID matches <em>product_id</em> from the database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -273,8 +298,8 @@ Performs case-insensitive search. Only returns products with inventory greater t
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.decrement_inventories">
-<code class="descclassname">marketplace.</code><code class="descname">decrement_inventories</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#decrement_inventories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.decrement_inventories" title="Permalink to this definition">¶</a></dt>
+<dt id="product_functions.decrement_inventories">
+<code class="descclassname">product_functions.</code><code class="descname">decrement_inventories</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#decrement_inventories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.decrement_inventories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decrement the inventories of the products that
 the user purchased.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -309,11 +334,11 @@ the user purchased.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-marketplace">
-<span id="cart-functions"></span><h3>Cart functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-cart_functions">
+<span id="cart-functions"></span><h3>Cart functions<a class="headerlink" href="#module-cart_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="marketplace.add_product_to_cart">
-<code class="descclassname">marketplace.</code><code class="descname">add_product_to_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#add_product_to_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.add_product_to_cart" title="Permalink to this definition">¶</a></dt>
+<dt id="cart_functions.add_product_to_cart">
+<code class="descclassname">cart_functions.</code><code class="descname">add_product_to_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#add_product_to_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.add_product_to_cart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the product with <em>product_id</em> to the given user’s cart.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -350,8 +375,8 @@ the user purchased.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.remove_product_from_cart">
-<code class="descclassname">marketplace.</code><code class="descname">remove_product_from_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#remove_product_from_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.remove_product_from_cart" title="Permalink to this definition">¶</a></dt>
+<dt id="cart_functions.remove_product_from_cart">
+<code class="descclassname">cart_functions.</code><code class="descname">remove_product_from_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#remove_product_from_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.remove_product_from_cart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the product with <em>product_id</em> from the given user’s cart.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -388,8 +413,8 @@ the user purchased.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.get_user_cart">
-<code class="descclassname">marketplace.</code><code class="descname">get_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_user_cart" title="Permalink to this definition">¶</a></dt>
+<dt id="cart_functions.get_user_cart">
+<code class="descclassname">cart_functions.</code><code class="descname">get_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#get_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.get_user_cart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the given user’s cart.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -428,8 +453,8 @@ the user purchased.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.clear_user_cart">
-<code class="descclassname">marketplace.</code><code class="descname">clear_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#clear_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.clear_user_cart" title="Permalink to this definition">¶</a></dt>
+<dt id="cart_functions.clear_user_cart">
+<code class="descclassname">cart_functions.</code><code class="descname">clear_user_cart</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#clear_user_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.clear_user_cart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the given user’s cart</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -455,11 +480,11 @@ the user purchased.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-marketplace">
-<span id="order-functions"></span><h3>Order functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-order_functions">
+<span id="order-functions"></span><h3>Order functions<a class="headerlink" href="#module-order_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="marketplace.get_order">
-<code class="descclassname">marketplace.</code><code class="descname">get_order</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#get_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.get_order" title="Permalink to this definition">¶</a></dt>
+<dt id="order_functions.get_order">
+<code class="descclassname">order_functions.</code><code class="descname">get_order</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/order_functions.html#get_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#order_functions.get_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get order with ID <em>order_id</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -506,8 +531,8 @@ the user purchased.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.generate_order">
-<code class="descclassname">marketplace.</code><code class="descname">generate_order</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#generate_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.generate_order" title="Permalink to this definition">¶</a></dt>
+<dt id="order_functions.generate_order">
+<code class="descclassname">order_functions.</code><code class="descname">generate_order</code><span class="sig-paren">(</span><em>uname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/order_functions.html#generate_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#order_functions.generate_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an order for the given user from their cart.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -524,11 +549,11 @@ the user purchased.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-marketplace">
-<span id="helper-functions"></span><h3>Helper functions<a class="headerlink" href="#module-marketplace" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-helper_functions">
+<span id="helper-functions"></span><h3>Helper functions<a class="headerlink" href="#module-helper_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="marketplace.generate_product_uri">
-<code class="descclassname">marketplace.</code><code class="descname">generate_product_uri</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#generate_product_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.generate_product_uri" title="Permalink to this definition">¶</a></dt>
+<dt id="helper_functions.generate_product_uri">
+<code class="descclassname">helper_functions.</code><code class="descname">generate_product_uri</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helper_functions.html#generate_product_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helper_functions.generate_product_uri" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a product URI based on its ID.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -545,8 +570,8 @@ the user purchased.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="marketplace.find_func">
-<code class="descclassname">marketplace.</code><code class="descname">find_func</code><span class="sig-paren">(</span><em>string</em>, <em>substring</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/marketplace.html#find_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#marketplace.find_func" title="Permalink to this definition">¶</a></dt>
+<dt id="helper_functions.find_func">
+<code class="descclassname">helper_functions.</code><code class="descname">find_func</code><span class="sig-paren">(</span><em>string</em>, <em>substring</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helper_functions.html#find_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helper_functions.find_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if one string is present in another string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1257,11 +1282,11 @@ inventories were decremented.</p>
   <ul>
 <li><a class="reference internal" href="#">Shopify Dev Challenge’s documentation</a><ul>
 <li><a class="reference internal" href="#database-functions">Database functions</a><ul>
-<li><a class="reference internal" href="#module-marketplace">User functions</a></li>
-<li><a class="reference internal" href="#module-marketplace">Product functions</a></li>
-<li><a class="reference internal" href="#module-marketplace">Cart functions</a></li>
-<li><a class="reference internal" href="#module-marketplace">Order functions</a></li>
-<li><a class="reference internal" href="#module-marketplace">Helper functions</a></li>
+<li><a class="reference internal" href="#module-user_functions">User functions</a></li>
+<li><a class="reference internal" href="#module-product_functions">Product functions</a></li>
+<li><a class="reference internal" href="#module-cart_functions">Cart functions</a></li>
+<li><a class="reference internal" href="#module-order_functions">Order functions</a></li>
+<li><a class="reference internal" href="#module-helper_functions">Helper functions</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#endpoints">Endpoints</a><ul>

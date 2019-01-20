@@ -15,31 +15,31 @@ Database functions
 
 User functions
 --------------
-.. automodule:: marketplace
+.. automodule:: user_functions
    :members: sign_up, sign_in, get_user, get_user_by_email
 
 
 Product functions
 -----------------
-.. automodule:: marketplace
+.. automodule:: product_functions
     :members: add_product, get_all_products, get_product, find_products, delete_product, decrement_inventories
 
 
 Cart functions
 --------------
-.. automodule:: marketplace
+.. automodule:: cart_functions
     :members: add_product_to_cart, remove_product_from_cart, get_user_cart, clear_user_cart
 
 
 Order functions
 ---------------
-.. automodule:: marketplace
+.. automodule:: order_functions
     :members: get_order, generate_order
 
 
 Helper functions
 ----------------
-.. automodule:: marketplace
+.. automodule:: helper_functions
     :members: generate_product_uri, find_func
 
 
