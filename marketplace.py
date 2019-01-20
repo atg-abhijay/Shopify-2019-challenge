@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 def sign_up(uname, pwd, email):
     """
-    Signs up a new user to the database
+    Signs up a new user to the database.
 
     :param str uname: Username (has to be unique)
     :param str pwd: Password
@@ -33,7 +33,7 @@ def sign_up(uname, pwd, email):
 
 def sign_in(uname, pwd):
     """
-    Performs sign in of a user
+    Performs sign in of a user.
 
     :param str uname: Username
     :param str pwd: Password
@@ -57,7 +57,7 @@ def sign_in(uname, pwd):
 
 def get_user(uname):
     """
-    Retrieve user based on their username
+    Retrieve user based on their username.
 
     :param str uname: Username
 
@@ -86,7 +86,7 @@ def get_user(uname):
 
 def get_user_by_email(email):
     """
-    Retrieve user based on their email
+    Retrieve user based on their email.
 
     :param str email: User's email
 
@@ -117,11 +117,15 @@ def get_user_by_email(email):
 
 def add_product(title, price, inventory_count):
     """
-    Add product to database
+    Add product to database.
 
     :param str title: Title of the product
     :param float price: Price of the product
-    :param int inventory_count:
+    :param int inventory_count: Inventory count of the product
+
+    :returns: ID of the added product
+    :rtype: *str*
+
     """
 
     product_id = str(uuid4())
@@ -131,23 +135,109 @@ def add_product(title, price, inventory_count):
 
 
 def get_all_products():
+    """
+    Get all the products in the database with inventory greater than zero.
+
+    :returns: A list of products
+
+    - Example
+
+    .. code-block:: JSON
+
+        [
+            {
+                "inventory_count": 18,
+                "price": 15.65,
+                "title": "Mango pizza",
+                "uri": "http://localhost:5000/marketplace/api/product/84a1c5d6-d1fd-4db0-bc1e-f450a70ca7d9"
+            },
+            {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            }
+        ]
+
+    """
+
     Product_query = Query()
     return products.search(Product_query.inventory_count > 0)
 
 
 def get_product(product_id):
+    """
+    Get a single product from the database by its ID. Only returns product if it
+    has inventory greater than zero.
+
+    :param str product_id: ID of the product
+
+    :returns: Product whose ID matches the parameter passed
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+            {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            }
+    """
+
     Product_query = Query()
     return products.get((Product_query.uri == generate_product_uri(product_id))
                         & (Product_query.inventory_count > 0))
 
 
 def find_products(search_title):
+    """
+    Find products in the database whose title match *search_title* at least partially.
+    Performs case-insensitive search. Only returns products with inventory greater than zero.
+
+    :param str search_title: Title to search products by
+
+    :returns: A list of products whose titles match the search title at least partially
+
+    - Example: For the search title "PCaK", the products returned are:
+
+    .. code-block:: JSON
+
+        [
+            {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            },
+            {
+                "inventory_count": 12,
+                "price": 7.99,
+                "title": "Orange cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+            }
+        ]
+    """
+
     Product_query = Query()
     return products.search((Product_query.title.test(find_func, search_title))
                            & (Product_query.inventory_count > 0))
 
 
 def delete_product(product_id):
+    """
+    Delete product whose ID matches *product_id* from the database.
+
+    :param str product_id: ID of the product to delete
+
+    :returns:
+        - A list containing only *False* if the product was not found in the database.
+        - A list containing *True* and the product that was deleted.
+
+    """
+
     Product_query = Query()
     prod_to_delete = products.get(Product_query.uri == generate_product_uri(product_id))
     if not prod_to_delete:
@@ -160,6 +250,31 @@ def delete_product(product_id):
 """Cart functions"""
 
 def add_product_to_cart(uname, product_id):
+    """
+    Add the product with *product_id* to the given user's cart.
+
+    :param str uname: Username
+    :param str product_id: ID of the product to add to the user's cart
+
+    :returns: Username along with the product added to the cart
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya",
+            "product": {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            }
+        }
+
+    """
+
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
@@ -171,6 +286,31 @@ def add_product_to_cart(uname, product_id):
 
 
 def remove_product_from_cart(uname, product_id):
+    """
+    Remove the product with *product_id* from the given user's cart.
+
+    :param str uname: Username
+    :param str product_id: Product to remove from user's cart
+
+    :returns: Username along with the product removed from the cart
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya",
+            "product": {
+                "inventory_count": 51,
+                "price": 4.99,
+                "title": "Guava cupcake",
+                "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+            }
+        }
+
+    """
+
     User_query = Query()
     Product_query = Query()
     current_user = users.get(User_query.username == uname)
@@ -181,6 +321,38 @@ def remove_product_from_cart(uname, product_id):
 
 
 def get_user_cart(uname):
+    """
+    Get the given user's cart
+
+    :param str uname: Username
+
+    :returns: The given user's cart
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "products": [
+                {
+                    "inventory_count": 12,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                },
+                {
+                    "inventory_count": 51,
+                    "price": 4.99,
+                    "title": "Guava cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/a37b3418-cc8f-40fa-8d63-661b3912eb71"
+                }
+            ],
+            "total_price": 12.98
+        }
+
+    """
+
     User_query = Query()
     Product_query = Query()
     current_user_cart = users.get(User_query.username == uname)['cart']
@@ -195,6 +367,25 @@ def get_user_cart(uname):
 
 
 def clear_user_cart(uname):
+    """
+    Clear the given user's cart
+
+    :param str uname: Username
+
+    :returns: Username along with their empty cart
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "username": "Midoriya",
+            "user_cart": []
+        }
+
+    """
+
     User_query = Query()
     users.update({'cart': []}, User_query.username == uname)
     affected_user = get_user(uname)
@@ -204,10 +395,60 @@ def clear_user_cart(uname):
 """Order functions"""
 
 def get_order(order_id):
+    """
+    Get order with ID *order_id*.
+
+    :param str order_id: ID of the order
+
+    :returns: Order matching ID *order_id*
+    :rtype: *dict*
+
+    - Example
+
+    .. code-block:: JSON
+
+        {
+            "amount": 23.97,
+            "order_id": "274a5c89-f9ad-4043-a07c-0d545512291b",
+            "products": [
+                {
+                    "inventory_count": 12,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                },
+                {
+                    "inventory_count": 12,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                },
+                {
+                    "inventory_count": 12,
+                    "price": 7.99,
+                    "title": "Orange cupcake",
+                    "uri": "http://localhost:5000/marketplace/api/product/f4ad5da8-2cc5-4ec0-86f3-4c02367c082f"
+                }
+            ],
+            "username": "Uraraka"
+        }
+
+    """
+
     return orders.get(Query().order_id == order_id)
 
 
 def generate_order(uname):
+    """
+    Generate an order for the given user from their cart.
+
+    :param str uname: Username
+
+    :returns: Generated order ID
+    :rtype: *str*
+
+    """
+
     user_cart = get_user_cart(uname)
     order_id = str(uuid4())
     orders.insert({'order_id': order_id, 'products': user_cart['products'],
