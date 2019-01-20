@@ -430,6 +430,7 @@ def route_remove_product_from_cart():
 
     :Status Codes:
         - 200 OK - Product removed from user's cart
+        - 404 Not found - Product not in cart anymore
 
     """
 
@@ -549,10 +550,18 @@ def route_complete_cart():
 
     :Status Codes:
         - 200 OK - Cart completed
+        - 404 Not found - User not found or User's cart is empty
 
     """
 
     username = request.json['username']
+    user = get_user(username)
+    if not user:
+        abort(404, "User not found")
+
+    if not user['cart']:
+        abort(404, "User's cart is empty")
+
     affected_products = decrement_inventories(username)
     order = get_order(generate_order(username))
     clear_user_cart(username)

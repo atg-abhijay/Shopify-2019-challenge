@@ -45,6 +45,8 @@ def add_product_to_cart(uname, product_id):
 def remove_product_from_cart(uname, product_id):
     """
     Remove the product with *product_id* from the given user's cart.
+    If the product is not present in the cart anymore, an empty *dict*
+    is returned.
 
     :param str uname: Username
     :param str product_id: Product to remove from user's cart
