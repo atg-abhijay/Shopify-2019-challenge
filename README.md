@@ -20,12 +20,12 @@ To run the server, run the following command from the location of the file *mark
 python marketplace.py
 ```
 
-To run the tests, run the following command from the *tests* directory:
+To see how to run the tests, run the following command from the *tests* directory:
 ```python
 python run_tests.py -h
 ```
 
-Some examples of how the test can be run are:
+Some examples of how the tests can be run from the *tests* directory are:
 ```
 python run_tests.py --spec all
 python run_tests.py --spec product
