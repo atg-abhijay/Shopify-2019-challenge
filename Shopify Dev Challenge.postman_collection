@@ -1,0 +1,970 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Shopify Dev Challenge",
+		"_postman_id": "492ea312-9e7a-a510-d25e-bf2ac6391a84",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign up",
+			"description": "",
+			"item": [
+				{
+					"name": "Sign up - new user 1",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Bakugo\",\n\t\"password\": \"b256\",\n\t\"email\": \"b@bk.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": [
+						{
+							"id": "6d83c993-33f1-488e-bea0-7da499bc0413",
+							"name": "Sign up - new user 1",
+							"originalRequest": {
+								"url": "localhost:5000/marketplace/api/sign-up",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"Bakugo\",\n\t\"password\": \"b256\",\n\t\"email\": \"b@bk.com\"\n}"
+								}
+							},
+							"status": "CREATED",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"name": "content-length",
+									"key": "content-length",
+									"value": "137",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"name": "content-type",
+									"key": "content-type",
+									"value": "application/json",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "date",
+									"key": "date",
+									"value": "Sun, 20 Jan 2019 21:25:47 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "server",
+									"key": "server",
+									"value": "Werkzeug/0.14.1 Python/3.5.2",
+									"description": "A name for the server"
+								}
+							],
+							"cookie": [],
+							"responseTime": 52,
+							"body": "{\n  \"message\": \"User signed up successfully\", \n  \"new_user\": {\n    \"cart\": [], \n    \"email\": \"b@bk.com\", \n    \"username\": \"Bakugo\"\n  }\n}\n"
+						}
+					]
+				},
+				{
+					"name": "Sign up - new user 2",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Midoriya\",\n    \"password\": \"m354\",\n    \"email\": \"m@mi.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - new user 3",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n    \"password\": \"a123\",\n    \"email\": \"a@aj.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - new user 4",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Uraraka\",\n    \"password\": \"agt3gy43t\",\n    \"email\": \"u@uo.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - username not provided",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"\",\n\t\"password\": \"3gst3b\",\n\t\"email\": \"b@bk.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - username already being used",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"password\": \"3gst3b\",\n\t\"email\": \"k@cs.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - password not provided",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Todoroki\",\n\t\"password\": \"\",\n\t\"email\": \"k@cs.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - email not provided",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Todoroki\",\n\t\"password\": \"52tfsfa24t\",\n\t\"email\": \"\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up - email already registered",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-up",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Todoroki\",\n\t\"password\": \"52tfsfa24t\",\n\t\"email\": \"u@uo.com\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sign in",
+			"description": "",
+			"item": [
+				{
+					"name": "Sign in - non-existent username",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-in",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Todoroki\",\n\t\"password\": \"g5t35\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in - incorrect password",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-in",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"password\": \"sfa3\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sign in - successful login",
+					"request": {
+						"url": "localhost:5000/marketplace/api/sign-in",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"password\": \"a123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get all products (Before)",
+			"description": "Before adding any products\n",
+			"item": [
+				{
+					"name": "Get all products - no products currently",
+					"request": {
+						"url": "localhost:5000/marketplace/api/products",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango pizza\",\n\t\"price\": 15.65,\n\t\"inventory_count\": 19\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Add product",
+			"description": "",
+			"item": [
+				{
+					"name": "Add product - product title missing",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"\",\n\t\"price\": 12.49,\n\t\"inventory_count\": 23\n}"
+						},
+						"description": "Product title missing"
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - price not number",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango cake\",\n\t\"price\": \"sgsg\",\n\t\"inventory_count\": 23\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - price negative",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango cake\",\n\t\"price\": -234,\n\t\"inventory_count\": 23\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - inventory count not number",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango cake\",\n\t\"price\": 12.40,\n\t\"inventory_count\": 45.2\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - inventory count negative",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango cake\",\n\t\"price\": 12.40,\n\t\"inventory_count\": -26\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - mango cake",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango cake\",\n\t\"price\": 12.40,\n\t\"inventory_count\": 10\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - orange cake",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Orange cake\",\n\t\"price\": 8.99,\n\t\"inventory_count\": 0\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - mango pizza",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango pizza\",\n\t\"price\": 15.65,\n\t\"inventory_count\": 19\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - guava cupcake",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Guava cupcake\",\n\t\"price\": 4.99,\n\t\"inventory_count\": 53\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product - orange cupcake",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Orange cupcake\",\n\t\"price\": 7.99,\n\t\"inventory_count\": 35\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get all products (After)",
+			"description": "Before adding any products\n",
+			"item": [
+				{
+					"name": "Get all products - some products in DB",
+					"request": {
+						"url": "localhost:5000/marketplace/api/products",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mango pizza\",\n\t\"price\": 15.65,\n\t\"inventory_count\": 19\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get product",
+			"description": "",
+			"item": [
+				{
+					"name": "Get product - existing product",
+					"request": {
+						"url": "localhost:5000/marketplace/api/product/bee34276-de33-4951-ac6b-3e7e0a32074c",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get product - non-existent product",
+					"request": {
+						"url": "localhost:5000/marketplace/api/product/092ee5be-313d-4b6c-d9t4-ccb6b61f8ce1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Find products",
+			"description": "",
+			"item": [
+				{
+					"name": "Find products - existing products",
+					"request": {
+						"url": "localhost:5000/marketplace/api/find-products/MaNGo",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Find products - non-existent product",
+					"request": {
+						"url": "localhost:5000/marketplace/api/find-products/OraNNGE",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete product",
+			"description": "",
+			"item": [
+				{
+					"name": "Delete product - existing product",
+					"request": {
+						"url": "localhost:5000/marketplace/api/delete-product/bee34276-de33-4951-ac6b-3e7e0a32074c",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product - non-existent product",
+					"request": {
+						"url": "localhost:5000/marketplace/api/delete-product/092ee5be-g29i-5ty7-a44e-ccb6b61f8ce1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Add product to cart",
+			"description": "",
+			"item": [
+				{
+					"name": "Add product to cart - guava cupcake (Midoriya)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product-to-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Midoriya\",\n\t\"product_id\": \"a2ac3740-95c8-4daa-b2ea-7d933f1a5699\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product to cart - mango pizza (Abhijay)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product-to-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"product_id\": \"a27d1e78-5c4a-4812-a2e7-86a3a42db137\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product to cart - orange cupcake (Uraraka)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product-to-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Uraraka\",\n\t\"product_id\": \"0b2651b1-2bfb-495d-937f-45b2dd986062\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add product to cart - orange cupcake (Abhijay)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/add-product-to-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"product_id\": \"0b2651b1-2bfb-495d-937f-45b2dd986062\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Remove product from cart",
+			"description": "",
+			"item": [
+				{
+					"name": "Remove product from cart - mango pizza (Abhijay)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/remove-product-from-cart",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"product_id\": \"a27d1e78-5c4a-4812-a2e7-86a3a42db137\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from cart - orange cupcake (Abhijay)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/remove-product-from-cart",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\",\n\t\"product_id\": \"0b2651b1-2bfb-495d-937f-45b2dd986062\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product from cart - guava cupcake (Midoriya)",
+					"request": {
+						"url": "localhost:5000/marketplace/api/remove-product-from-cart",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Midoriya\",\n\t\"product_id\": \"a2ac3740-95c8-4daa-b2ea-7d933f1a5699\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get cart",
+			"description": "",
+			"item": [
+				{
+					"name": "Get user cart - Midoriya",
+					"request": {
+						"url": "localhost:5000/marketplace/api/get-user-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Midoriya\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get user cart - Abhijay",
+					"request": {
+						"url": "localhost:5000/marketplace/api/get-user-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get user cart - Uraraka",
+					"request": {
+						"url": "localhost:5000/marketplace/api/get-user-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Uraraka\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Complete cart",
+			"description": "",
+			"item": [
+				{
+					"name": "Complete cart - Midoriya",
+					"request": {
+						"url": "localhost:5000/marketplace/api/complete-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Midoriya\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Complete cart - Uraraka",
+					"request": {
+						"url": "localhost:5000/marketplace/api/complete-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Uraraka\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Complete cart - Abhijay",
+					"request": {
+						"url": "localhost:5000/marketplace/api/complete-cart",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Abhijay\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get order",
+			"description": "",
+			"item": [
+				{
+					"name": "Get order - existing order",
+					"request": {
+						"url": "localhost:5000/marketplace/api/order/22444efc-5e3a-4fde-bfbf-2a5cbfb62638",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get order - non-existent order",
+					"request": {
+						"url": "localhost:5000/marketplace/api/order/274a5c89-f9ad-4043-d86h-0d545512291b",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,5 @@
 from tinydb import TinyDB, Query
+from passlib.apps import custom_app_context as pwd_context
 
 users = TinyDB('db.json').table('users')
 
@@ -14,7 +15,7 @@ def sign_up(uname, pwd, email):
     :rtype: *str*
 
     """
-    users.insert({'username': uname, 'password': pwd, 'email': email, 'cart': []})
+    users.insert({'username': uname, 'password': pwd_context.encrypt(pwd), 'email': email, 'cart': []})
     return uname
 
 
@@ -36,7 +37,7 @@ def sign_in(uname, pwd):
     if not found_user:
         return 1
 
-    if found_user['password'] != pwd:
+    if not pwd_context.verify(pwd, found_user['password']):
         return 2
 
     return 0
