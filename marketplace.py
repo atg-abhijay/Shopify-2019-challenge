@@ -372,8 +372,8 @@ def route_add_product_to_cart():
     .. code-block:: JSON
 
         {
+            "message": "Product added to cart successfully",
             "added_product_to_cart": {
-                "message": "Product added to cart successfully",
                 "product": {
                     "inventory_count": 51,
                     "price": 4.99,
@@ -390,9 +390,8 @@ def route_add_product_to_cart():
     """
 
     uname_product = add_product_to_cart(request.json['username'], request.json['product_id'])
-    uname_product['message'] = "Product added to cart successfully"
 
-    return jsonify({'added_product_to_cart': uname_product})
+    return jsonify({'added_product_to_cart': uname_product, 'message': "Product added to cart successfully"})
 
 
 @app.route('/marketplace/api/remove-product-from-cart', methods=['DELETE'])
@@ -416,8 +415,8 @@ def route_remove_product_from_cart():
     .. code-block:: JSON
 
         {
+            "message": "Product removed from cart successfully",
             "removed_product_from_cart": {
-                "message": "Product removed from cart successfully",
                 "product": {
                     "inventory_count": 51,
                     "price": 4.99,
@@ -438,9 +437,7 @@ def route_remove_product_from_cart():
     if not uname_product:
         abort(404, 'Product not in cart anymore')
 
-    uname_product['message'] = "Product removed from cart successfully"
-
-    return jsonify({'removed_product_from_cart': uname_product})
+    return jsonify({'removed_product_from_cart': uname_product, 'message': "Product removed from cart successfully"})
 
 
 @app.route('/marketplace/api/get-user-cart', methods=['POST'])
@@ -648,4 +645,4 @@ def bad_request(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug=True)
