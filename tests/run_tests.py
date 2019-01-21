@@ -2,7 +2,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Test manager")
-parser.add_argument("--spec", action="store", dest="spec", default="all", help="The following options help you run the appropriate battery of tests or all the tests. Possible options are 'signup', 'signin', 'product', 'cart', 'order', 'all' ")
+parser.add_argument("--spec", action="store", dest="spec", default="all", help="The following options help you run the appropriate battery of tests or all the tests. Possible options are 'signup', 'signin', 'product', 'all' ")
 results = parser.parse_args()
 
 FIRST_TIME_TESTS_RUN = False

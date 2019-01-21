@@ -2,3 +2,5 @@ flask
 tinydb
 sphinx
 sphinxcontrib-httpdomain
+passlib
+pytest
