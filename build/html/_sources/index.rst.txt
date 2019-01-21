@@ -10,6 +10,8 @@ Shopify Dev Challenge's documentation
    :maxdepth: 2
    :caption: Contents:
 
+.. contents::
+
 Database functions
 ==================
 

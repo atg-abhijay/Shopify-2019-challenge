@@ -9,7 +9,7 @@
     <title>Shopify Dev Challenge’s documentation &#8212; Shopify Dev Challenge 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,16 +27,42 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="shopify-dev-challenge-s-documentation">
-<h1>Shopify Dev Challenge’s documentation<a class="headerlink" href="#shopify-dev-challenge-s-documentation" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1">Shopify Dev Challenge’s documentation</a><a class="headerlink" href="#shopify-dev-challenge-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#shopify-dev-challenge-s-documentation" id="id1">Shopify Dev Challenge’s documentation</a><ul>
+<li><a class="reference internal" href="#database-functions" id="id2">Database functions</a><ul>
+<li><a class="reference internal" href="#module-user_functions" id="id3">User functions</a></li>
+<li><a class="reference internal" href="#module-product_functions" id="id4">Product functions</a></li>
+<li><a class="reference internal" href="#module-cart_functions" id="id5">Cart functions</a></li>
+<li><a class="reference internal" href="#module-order_functions" id="id6">Order functions</a></li>
+<li><a class="reference internal" href="#module-helper_functions" id="id7">Helper functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#endpoints" id="id8">Endpoints</a><ul>
+<li><a class="reference internal" href="#user-endpoints" id="id9">User endpoints</a></li>
+<li><a class="reference internal" href="#product-endpoints" id="id10">Product endpoints</a></li>
+<li><a class="reference internal" href="#cart-endpoints" id="id11">Cart endpoints</a></li>
+<li><a class="reference internal" href="#order-endpoints" id="id12">Order endpoints</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables" id="id13">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="database-functions">
-<h2>Database functions<a class="headerlink" href="#database-functions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2">Database functions</a><a class="headerlink" href="#database-functions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="module-user_functions">
-<span id="user-functions"></span><h3>User functions<a class="headerlink" href="#module-user_functions" title="Permalink to this headline">¶</a></h3>
+<span id="user-functions"></span><h3><a class="toc-backref" href="#id3">User functions</a><a class="headerlink" href="#module-user_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="user_functions.sign_up">
 <code class="descclassname">user_functions.</code><code class="descname">sign_up</code><span class="sig-paren">(</span><em>uname</em>, <em>pwd</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user_functions.html#sign_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#user_functions.sign_up" title="Permalink to this definition">¶</a></dt>
@@ -152,7 +178,7 @@
 
 </div>
 <div class="section" id="module-product_functions">
-<span id="product-functions"></span><h3>Product functions<a class="headerlink" href="#module-product_functions" title="Permalink to this headline">¶</a></h3>
+<span id="product-functions"></span><h3><a class="toc-backref" href="#id4">Product functions</a><a class="headerlink" href="#module-product_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="product_functions.add_product">
 <code class="descclassname">product_functions.</code><code class="descname">add_product</code><span class="sig-paren">(</span><em>title</em>, <em>price</em>, <em>inventory_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/product_functions.html#add_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#product_functions.add_product" title="Permalink to this definition">¶</a></dt>
@@ -335,7 +361,7 @@ the user purchased.</p>
 
 </div>
 <div class="section" id="module-cart_functions">
-<span id="cart-functions"></span><h3>Cart functions<a class="headerlink" href="#module-cart_functions" title="Permalink to this headline">¶</a></h3>
+<span id="cart-functions"></span><h3><a class="toc-backref" href="#id5">Cart functions</a><a class="headerlink" href="#module-cart_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="cart_functions.add_product_to_cart">
 <code class="descclassname">cart_functions.</code><code class="descname">add_product_to_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#add_product_to_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.add_product_to_cart" title="Permalink to this definition">¶</a></dt>
@@ -377,7 +403,9 @@ the user purchased.</p>
 <dl class="function">
 <dt id="cart_functions.remove_product_from_cart">
 <code class="descclassname">cart_functions.</code><code class="descname">remove_product_from_cart</code><span class="sig-paren">(</span><em>uname</em>, <em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart_functions.html#remove_product_from_cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cart_functions.remove_product_from_cart" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the product with <em>product_id</em> from the given user’s cart.</p>
+<dd><p>Remove the product with <em>product_id</em> from the given user’s cart.
+If the product is not present in the cart anymore, an empty <em>dict</em>
+is returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -481,7 +509,7 @@ the user purchased.</p>
 
 </div>
 <div class="section" id="module-order_functions">
-<span id="order-functions"></span><h3>Order functions<a class="headerlink" href="#module-order_functions" title="Permalink to this headline">¶</a></h3>
+<span id="order-functions"></span><h3><a class="toc-backref" href="#id6">Order functions</a><a class="headerlink" href="#module-order_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="order_functions.get_order">
 <code class="descclassname">order_functions.</code><code class="descname">get_order</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/order_functions.html#get_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#order_functions.get_order" title="Permalink to this definition">¶</a></dt>
@@ -550,7 +578,7 @@ the user purchased.</p>
 
 </div>
 <div class="section" id="module-helper_functions">
-<span id="helper-functions"></span><h3>Helper functions<a class="headerlink" href="#module-helper_functions" title="Permalink to this headline">¶</a></h3>
+<span id="helper-functions"></span><h3><a class="toc-backref" href="#id7">Helper functions</a><a class="headerlink" href="#module-helper_functions" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="helper_functions.generate_product_uri">
 <code class="descclassname">helper_functions.</code><code class="descname">generate_product_uri</code><span class="sig-paren">(</span><em>product_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/helper_functions.html#generate_product_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#helper_functions.generate_product_uri" title="Permalink to this definition">¶</a></dt>
@@ -597,9 +625,9 @@ the user purchased.</p>
 </div>
 </div>
 <div class="section" id="endpoints">
-<h2>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">Endpoints</a><a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="user-endpoints">
-<h3>User endpoints<a class="headerlink" href="#user-endpoints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">User endpoints</a><a class="headerlink" href="#user-endpoints" title="Permalink to this headline">¶</a></h3>
 <dl class="post">
 <dt id="post--marketplace-api-sign-up">
 <code class="descname">POST </code><code class="descname">/marketplace/api/sign-up</code><a class="headerlink" href="#post--marketplace-api-sign-up" title="Permalink to this definition">¶</a></dt>
@@ -709,7 +737,7 @@ the user purchased.</p>
 
 </div>
 <div class="section" id="product-endpoints">
-<h3>Product endpoints<a class="headerlink" href="#product-endpoints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Product endpoints</a><a class="headerlink" href="#product-endpoints" title="Permalink to this headline">¶</a></h3>
 <dl class="post">
 <dt id="post--marketplace-api-add-product">
 <code class="descname">POST </code><code class="descname">/marketplace/api/add-product</code><a class="headerlink" href="#post--marketplace-api-add-product" title="Permalink to this definition">¶</a></dt>
@@ -945,7 +973,7 @@ Performs case-insensitive search. Only returns products with inventory greater t
 
 </div>
 <div class="section" id="cart-endpoints">
-<h3>Cart endpoints<a class="headerlink" href="#cart-endpoints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Cart endpoints</a><a class="headerlink" href="#cart-endpoints" title="Permalink to this headline">¶</a></h3>
 <dl class="post">
 <dt id="post--marketplace-api-add-product-to-cart">
 <code class="descname">POST </code><code class="descname">/marketplace/api/add-product-to-cart</code><a class="headerlink" href="#post--marketplace-api-add-product-to-cart" title="Permalink to this definition">¶</a></dt>
@@ -1051,6 +1079,7 @@ Performs case-insensitive search. Only returns products with inventory greater t
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
 <li>200 OK - Product removed from user’s cart</li>
+<li>404 Not found - Product not in cart anymore</li>
 </ul>
 </td>
 </tr>
@@ -1190,6 +1219,7 @@ inventories were decremented.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
 <li>200 OK - Cart completed</li>
+<li>404 Not found - User not found or User’s cart is empty</li>
 </ul>
 </td>
 </tr>
@@ -1199,7 +1229,7 @@ inventories were decremented.</p>
 
 </div>
 <div class="section" id="order-endpoints">
-<h3>Order endpoints<a class="headerlink" href="#order-endpoints" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Order endpoints</a><a class="headerlink" href="#order-endpoints" title="Permalink to this headline">¶</a></h3>
 <dl class="get">
 <dt id="get--marketplace-api-order-(order_id)">
 <code class="descname">GET </code><code class="descname">/marketplace/api/order/</code><span class="sig-paren">(</span><em>order_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--marketplace-api-order-(order_id)" title="Permalink to this definition">¶</a></dt>
@@ -1263,7 +1293,7 @@ inventories were decremented.</p>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13">Indices and tables</a><a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
 <li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
@@ -1274,32 +1304,22 @@ inventories were decremented.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Shopify Dev Challenge’s documentation</a><ul>
-<li><a class="reference internal" href="#database-functions">Database functions</a><ul>
-<li><a class="reference internal" href="#module-user_functions">User functions</a></li>
-<li><a class="reference internal" href="#module-product_functions">Product functions</a></li>
-<li><a class="reference internal" href="#module-cart_functions">Cart functions</a></li>
-<li><a class="reference internal" href="#module-order_functions">Order functions</a></li>
-<li><a class="reference internal" href="#module-helper_functions">Helper functions</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#endpoints">Endpoints</a><ul>
-<li><a class="reference internal" href="#user-endpoints">User endpoints</a></li>
-<li><a class="reference internal" href="#product-endpoints">Product endpoints</a></li>
-<li><a class="reference internal" href="#cart-endpoints">Cart endpoints</a></li>
-<li><a class="reference internal" href="#order-endpoints">Order endpoints</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="#">Shopify Dev Challenge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -1307,13 +1327,6 @@ inventories were decremented.</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -1334,8 +1347,8 @@ inventories were decremented.</p>
       &copy;2019, Abhijay Gupta.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/index.rst.txt"

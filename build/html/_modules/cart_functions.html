@@ -9,7 +9,7 @@
     <title>cart_functions &#8212; Shopify Dev Challenge 0.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for cart_functions</h1><div class="highlight"><pre>
@@ -77,6 +79,8 @@
 <div class="viewcode-block" id="remove_product_from_cart"><a class="viewcode-back" href="../index.html#cart_functions.remove_product_from_cart">[docs]</a><span class="k">def</span> <span class="nf">remove_product_from_cart</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remove the product with *product_id* from the given user&#39;s cart.</span>
+<span class="sd">    If the product is not present in the cart anymore, an empty *dict*</span>
+<span class="sd">    is returned.</span>
 
 <span class="sd">    :param str uname: Username</span>
 <span class="sd">    :param str product_id: Product to remove from user&#39;s cart</span>
@@ -103,8 +107,12 @@
     <span class="n">User_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
     <span class="n">Product_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
     <span class="n">current_user</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
-    <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
-    <span class="n">users</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]},</span> <span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">product_id</span> <span class="ow">in</span> <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]:</span>
+        <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+        <span class="n">users</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">current_user</span><span class="p">[</span><span class="s1">&#39;cart&#39;</span><span class="p">]},</span> <span class="n">User_query</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">uname</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">uname</span><span class="p">,</span> <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Product_query</span><span class="o">.</span><span class="n">uri</span> <span class="o">==</span> <span class="n">generate_product_uri</span><span class="p">(</span><span class="n">product_id</span><span class="p">))}</span></div>
 
@@ -182,10 +190,23 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Shopify Dev Challenge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
@@ -214,8 +235,8 @@
       &copy;2019, Abhijay Gupta.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 
