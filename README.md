@@ -31,6 +31,8 @@ python run_tests.py --spec all
 python run_tests.py --spec product
 ```
 
+I have also included a [Postman](https://www.getpostman.com/) collection file that can be used to play around with the service.
+
 The endpoints provided are:
 * User endpoints:-
   * Sign up
