@@ -1,4 +1,4 @@
-# Shopify_2019_challenge
+# Shopify 2019 Challenge
 
 This is my submission for the [Developer Internship Challenge](https://docs.google.com/document/d/1J49NAOIoWYOumaoQCKopPfudWI_jsQWVKlXmw1f1r-4/edit). I have made a [Flask](http://flask.pocoo.org/) server that utilises [TinyDB](https://tinydb.readthedocs.io/en/latest/index.html) as the database.
 
